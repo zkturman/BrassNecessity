@@ -2,30 +2,110 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+public enum EnemyState
+{
+    rest,
+    charge,
+    attack
+}
+
+
+
 public class Enemy : MonoBehaviour
 {
-    public float moveSpeed = 5f;
-    public float rotateSpeed = 10f;
-    public Vector3 target;
-    Rigidbody rb;
 
+    GameObject player;
+    Rigidbody rb;
+    Animator animator;
+    [SerializeField] EnemyState enemyState;
 
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        target = new Vector3(0f, 0f, 0f);
+        animator = GetComponent<Animator>();
+        player = GameObject.FindGameObjectWithTag("Player");
+        enemyState = EnemyState.rest;
+
     }
 
 
-    private void FixedUpdate()
+    private void Update()
     {
-        // Work in progress....
-        /*
-        Quaternion current = transform.rotation;
-        Quaternion targetDirection = Quaternion.LookRotation(target - transform.position);
-        rb.RotateTowards(transform.rotation, targetDirection, rotateSpeed * Time.deltaTime);
-        */
+        switch (enemyState)
+        {
+            case EnemyState.rest:
+                break;
+            case EnemyState.charge:
+                break;
+            case EnemyState.attack:
+                break;
+
+        }
     }
+
+
+    void EnemyStateRestLoop()
+    {
+        // 
+    }
+
+
+    void EnemyStateChargeEnter()
+    {
+
+    }
+
+
+    void EnemyStateChargeLoop()
+    {
+
+    }
+
+
+
+    IEnumerator Process()
+    {
+        yield return new WaitForSeconds(4f);
+
+        ChangePlayerVisibility(true);
+
+        yield return new WaitForSeconds(4f);
+
+        ChangePlayerRange(true);
+
+        yield return new WaitForSeconds(4f);
+
+        ChangePlayerRange(false);
+
+        yield return new WaitForSeconds(4f);
+
+        ChangePlayerRange(true);
+
+        yield return new WaitForSeconds(4f);
+
+        ChangePlayerRange(false);
+
+        yield return new WaitForSeconds(4f);
+
+        ChangePlayerVisibility(false);
+
+    }
+
+
+
+    private void ChangePlayerVisibility(bool playerIsVisible)
+    {
+        animator.SetBool("CanSeePlayer", playerIsVisible);
+    }
+
+
+    private void ChangePlayerRange(bool playerIsInRange)
+    {
+        animator.SetBool("PlayerInHitDistance", playerIsInRange);
+    }
+
 
 }
