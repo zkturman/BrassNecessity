@@ -6,7 +6,6 @@ public class EnemyAttackState : EnemyBaseState
 {
     public override void EnterState(EnemyController context)
     {
-        Debug.Log("EnemyAttackState has been entered!");
         context.animator.SetBool("PlayerInHitDistance", true);
     }
 
@@ -21,8 +20,15 @@ public class EnemyAttackState : EnemyBaseState
     }
 
 
-    public override void AnimationClipFinished(EnemyController context)
+    public override void AnimationClipFinished(EnemyController context, string animName)
     {
+        // Do nothing if it's not an 'attack' animation that has finished
+        if (animName != "Attack")
+        {
+            return;
+        }
+
+
         // Test if the player is still in range
         Vector3 targetVector = context.target.transform.position - context.transform.position;
         float targetDistance = targetVector.magnitude;

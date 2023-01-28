@@ -10,7 +10,7 @@ public abstract class EnemyBaseState
 
     public abstract void CollisonEntered(EnemyController context, Collision collision);
     
-    public abstract void AnimationClipFinished(EnemyController context);
+    public abstract void AnimationClipFinished(EnemyController context, string animName);
 
 
 

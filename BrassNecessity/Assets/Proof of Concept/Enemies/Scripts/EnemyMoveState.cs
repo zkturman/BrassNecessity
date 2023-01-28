@@ -15,7 +15,7 @@ public class EnemyMoveState : EnemyBaseState
     public override void UpdateState(EnemyController context)
     {
         // *** TEST *** Disabling the code to switch to attack mode 
-        /*   
+          
         
         // Test if the player is in attack range
         Vector3 targetVector = context.target.transform.position - context.transform.position;
@@ -26,20 +26,16 @@ public class EnemyMoveState : EnemyBaseState
             // Switch to the attack state
             //Debug.Log("EnemyMoveState.UpdateState() thinks it is within hitting distance of the player");
             context.SwitchState(context.AttackState);
-            return;
         } else
         {
         
-        // ** Original code - to be removed when testing complete ***
-        //Vector3 currentDirection = context.transform.forward;
-        //Vector3 targetDirection = context.target.transform.position - context.transform.position;
-        //float maxTurnPerFrame = context.turnSpeed * Time.deltaTime * Mathf.Deg2Rad;   // Vector3.RotateTowards requires 'maxTurn' value to be in radians not degrees
-        //float maxChangeInMagnitude = 0f;    // Since we only care about the direction, we don't want the magnitude of the new Vector3 to increase (currentDirection is already normalized, so setting maxChangeInMagnitude to 0 means the magnitude is locked at 1)
-        //Vector3 newDirection = Vector3.RotateTowards(currentDirection, targetDirection, maxTurnPerFrame, maxChangeInMagnitude);
-        //context.transform.rotation = Quaternion.LookRotation(newDirection);
+            context.charaController.Move(targetVector.normalized * context.moveSpeed * Time.deltaTime);
+            Quaternion qtr = Quaternion.LookRotation(targetVector, Vector3.up);
+            context.transform.rotation = qtr;
+
         
         }
-        */
+        
 
         /*    // THIS ALSO DOESN'T SEEM TO WORK
         // Rotate towards player
@@ -53,16 +49,6 @@ public class EnemyMoveState : EnemyBaseState
          */
 
 
-        Vector3 targetDirection = context.target.transform.position - context.transform.position;
-        context.charaController.Move(targetDirection.normalized * context.moveSpeed * Time.deltaTime);
-
-        // Code from IHeartGameDev video
-        Vector3 positionToLookAt;
-        Quaternion currentRotation;
-
-
-
-        
 
 
 
@@ -74,7 +60,7 @@ public class EnemyMoveState : EnemyBaseState
     }
 
 
-    public override void AnimationClipFinished(EnemyController context)
+    public override void AnimationClipFinished(EnemyController context, string animName)
     {
         // Not needed as the walking animation simply loops
     }

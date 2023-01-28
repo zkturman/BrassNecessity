@@ -14,12 +14,15 @@ public class EnemyController : MonoBehaviour
     public float turnSpeed = 90f;   // Degrees per second
     public float rotationFactorPerFrame;   // *** TESTING - may replace the turnSpeed variable above ***
     public float attackDistance = 1.5f;   // How close to move to the player before standing still and hitting
+    public EnemySpawnManager spawnManager;
+
 
     // State machine properties
     EnemyBaseState currentState;
     public EnemyIdleState IdleState = new EnemyIdleState();    // These 'potential' states need to be public so that the concrete State classes can refer to them when telling the Controller which state to switch to
     public EnemyMoveState MoveState = new EnemyMoveState();
     public EnemyAttackState AttackState = new EnemyAttackState();
+    public EnemyDieState DieState = new EnemyDieState();
 
 
     private void Awake()
@@ -55,10 +58,17 @@ public class EnemyController : MonoBehaviour
     }
 
 
-    public void AnimationFinished()
+    public void AnimationFinished(string animName)
     {
         // This gets called by an AnimationEvent on relevant AnimationClips (e.g. after an attack animation has completed)
         // This should be fed to the currentState to see whether the state needs to respond to the animation finishing
-        currentState.AnimationClipFinished(this);
+        currentState.AnimationClipFinished(this, animName);
+    }
+
+
+    [ContextMenu("Kill enemy (debug)")]
+    private void Debug_KillEnemy()
+    {
+        SwitchState(DieState);
     }
 }

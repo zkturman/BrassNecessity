@@ -4,6 +4,8 @@ using UnityEngine;
 
 
 
+// *** THIS SCRIPT IS DEPRECATED - REPLACE BY EnemyController ***
+
 public enum EnemyState
 {
     rest,

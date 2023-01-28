@@ -19,7 +19,7 @@ public class EnemyIdleState : EnemyBaseState
 
     }
 
-    public override void AnimationClipFinished(EnemyController context)
+    public override void AnimationClipFinished(EnemyController context, string animName)
     {
 
     }
