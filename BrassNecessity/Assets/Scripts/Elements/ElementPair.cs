@@ -4,9 +4,22 @@ using UnityEngine;
 using System;
 
 public class ElementPair
-{ 
-    public ElementType Primary { get; private set; }
-    public ElementType Secondary { get; private set; }
+{
+    [SerializeReference]
+    private ElementType _primary;
+    public ElementType Primary 
+    { 
+        get => _primary; 
+        private set => _primary = value; 
+    }
+
+    [SerializeReference]
+    private ElementType _secondary;
+    public ElementType Secondary 
+    { 
+        get => _secondary; 
+        private set => _secondary = value; 
+    }
     public ElementPair()
     {
         Primary = generateRandomType();
