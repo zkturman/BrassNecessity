@@ -27,9 +27,12 @@ public class ElementPair
 
     public float GetAttackingMultiplier(ElementPair defendingType)
     {
-        float primaryMultiplier = ElementMultiplierGrid.GetAttackMultiplier(Primary, defendingType.Primary);
-        float secondaryMultiplier = ElementMultiplierGrid.GetAttackMultiplier(Secondary, defendingType.Secondary);
-        return primaryMultiplier * secondaryMultiplier;
+        float finalMultiplier = ElementMultiplierGrid.GetAttackMultiplier(Primary, defendingType.Primary);
+        if (Secondary != ElementType.None)
+        {
+            finalMultiplier *= ElementMultiplierGrid.GetAttackMultiplier(Secondary, defendingType.Secondary);
+        }
+        return finalMultiplier;
     }
 
     private ElementType generateRandomType()

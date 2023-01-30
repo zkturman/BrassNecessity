@@ -21,6 +21,6 @@ public static class ElementMultiplierGrid
 
     public static float GetAttackMultiplier(ElementType attackingType, ElementType defendingType)
     {
-        return 0f;
+        return elementMultipliers[(int)attackingType, (int)defendingType];
     }
 }
