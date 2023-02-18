@@ -43,11 +43,11 @@ public class ControllerAnimationManager
 
     private void assignAnimationIDs()
     {
-        _animIDSpeed = Animator.StringToHash("Speed");
-        _animIDGrounded = Animator.StringToHash("Grounded");
-        _animIDJump = Animator.StringToHash("Jump");
-        _animIDFreeFall = Animator.StringToHash("FreeFall");
-        _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
+        _animIDSpeed = Animator.StringToHash(SpeedAnimationId);
+        _animIDGrounded = Animator.StringToHash(GroundAnimationId);
+        _animIDJump = Animator.StringToHash(JumpAnimationId);
+        _animIDFreeFall = Animator.StringToHash(FreeFallAnimationId);
+        _animIDMotionSpeed = Animator.StringToHash(MotionSpeedAnimationId);
     }
 
     public void TrySetAnimationSpeed(float valueToSet)
