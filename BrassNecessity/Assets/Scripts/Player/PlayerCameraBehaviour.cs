@@ -9,16 +9,16 @@ public class PlayerCameraBehaviour : MonoBehaviour
     public GameObject CinemachineCameraTarget;
 
     [Tooltip("How far in degrees can you move the camera up")]
-    public float TopClamp = 70.0f;
+    public float TopClamp = 90.0f;
 
     [Tooltip("How far in degrees can you move the camera down")]
-    public float BottomClamp = -30.0f;
+    public float BottomClamp = 70.0f;
 
     [Tooltip("Additional degress to override the camera. Useful for fine tuning camera position when locked")]
     public float CameraAngleOverride = 0.0f;
 
     [Tooltip("For locking the camera position on all axis")]
-    public bool LockCameraPosition = false;
+    public bool LockCameraPosition = true;
 
     // cinemachine
     private float _cinemachineTargetYaw;
@@ -52,16 +52,6 @@ public class PlayerCameraBehaviour : MonoBehaviour
 
     private void CameraRotation()
     {
-        //// if there is an input and camera position is not fixed
-        //if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
-        //{
-        //    //Don't multiply mouse input by Time.deltaTime;
-        //    float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
-
-        //    _cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier;
-        //    _cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier;
-        //}
-
         // clamp our rotations so our values are limited 360 degrees
         _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
         _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);

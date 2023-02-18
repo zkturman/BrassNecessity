@@ -20,8 +20,6 @@ namespace StarterAssets
 #endif
         private StarterAssetsInputs _input;
 
-        private const float _threshold = 0.01f;
-
         private bool IsCurrentDeviceMouse
         {
             get
