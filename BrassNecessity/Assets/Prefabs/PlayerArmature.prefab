@@ -1039,6 +1039,7 @@ GameObject:
   - component: {fileID: 5885216827943657505}
   - component: {fileID: 135756642000475821}
   - component: {fileID: 4416926081852918493}
+  - component: {fileID: 338055755261608959}
   m_Layer: 8
   m_Name: PlayerArmature
   m_TagString: Player
@@ -1114,11 +1115,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e54e5a728a9234ab24fcf1460ed8a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CinemachineCameraTarget: {fileID: 8338988566280778634}
-  TopClamp: 90
-  BottomClamp: 70
-  CameraAngleOverride: 0
-  LockCameraPosition: 1
   actionState: {fileID: 8116256990303697861}
 --- !u!114 &8116256990303697861
 MonoBehaviour:
@@ -1319,6 +1315,23 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &338055755261608959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4416926081852918481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efad6c5160ea37a4b8deff6d2cdcfcad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CinemachineCameraTarget: {fileID: 8338988566280778634}
+  TopClamp: 90
+  BottomClamp: 70
+  CameraAngleOverride: 0
+  LockCameraPosition: 1
 --- !u!1 &4523139366846529165
 GameObject:
   m_ObjectHideFlags: 0

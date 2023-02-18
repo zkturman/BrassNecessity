@@ -514,6 +514,29 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1137854035}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &685366448 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544,
+    type: 3}
+  m_PrefabInstance: {fileID: 1137854035}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &685366458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 685366448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efad6c5160ea37a4b8deff6d2cdcfcad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CinemachineCameraTarget: {fileID: 0}
+  TopClamp: 90
+  BottomClamp: 70
+  CameraAngleOverride: 0
+  LockCameraPosition: 1
 --- !u!1 &713235950
 GameObject:
   m_ObjectHideFlags: 0
@@ -1081,66 +1104,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerArmature (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 8285717363463228968, guid: 64dce48905ffd9b4293e595fa6941544,
-        type: 3}
-      propertyPath: _soundData.landingAudioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: ff697d3070687ce4583faa0561a145a2, type: 3}
-    - target: {fileID: 8285717363463228968, guid: 64dce48905ffd9b4293e595fa6941544,
-        type: 3}
-      propertyPath: _soundData.footstepAudioClips.Array.size
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8285717363463228968, guid: 64dce48905ffd9b4293e595fa6941544,
-        type: 3}
-      propertyPath: _soundData.footstepAudioClips.Array.data[0]
-      value: 
-      objectReference: {fileID: 8300000, guid: 72f526a6a9890f643a88e85a61c86c8a, type: 3}
-    - target: {fileID: 8285717363463228968, guid: 64dce48905ffd9b4293e595fa6941544,
-        type: 3}
-      propertyPath: _soundData.footstepAudioClips.Array.data[1]
-      value: 
-      objectReference: {fileID: 8300000, guid: 85016e0f2b01da248b9663dd49a161b0, type: 3}
-    - target: {fileID: 8285717363463228968, guid: 64dce48905ffd9b4293e595fa6941544,
-        type: 3}
-      propertyPath: _soundData.footstepAudioClips.Array.data[2]
-      value: 
-      objectReference: {fileID: 8300000, guid: 186de84b3207156479abe98f4958fed0, type: 3}
-    - target: {fileID: 8285717363463228968, guid: 64dce48905ffd9b4293e595fa6941544,
-        type: 3}
-      propertyPath: _soundData.footstepAudioClips.Array.data[3]
-      value: 
-      objectReference: {fileID: 8300000, guid: 1a91fcd19acf1e54bba0945d9f390849, type: 3}
-    - target: {fileID: 8285717363463228968, guid: 64dce48905ffd9b4293e595fa6941544,
-        type: 3}
-      propertyPath: _soundData.footstepAudioClips.Array.data[4]
-      value: 
-      objectReference: {fileID: 8300000, guid: 14e8a8d2158bec840b56c54f5266e692, type: 3}
-    - target: {fileID: 8285717363463228968, guid: 64dce48905ffd9b4293e595fa6941544,
-        type: 3}
-      propertyPath: _soundData.footstepAudioClips.Array.data[5]
-      value: 
-      objectReference: {fileID: 8300000, guid: 29841e7d5bbfb5b419c9ad16ca8bc4c1, type: 3}
-    - target: {fileID: 8285717363463228968, guid: 64dce48905ffd9b4293e595fa6941544,
-        type: 3}
-      propertyPath: _soundData.footstepAudioClips.Array.data[6]
-      value: 
-      objectReference: {fileID: 8300000, guid: dd1af302b8902684d9381de1f2d3a5af, type: 3}
-    - target: {fileID: 8285717363463228968, guid: 64dce48905ffd9b4293e595fa6941544,
-        type: 3}
-      propertyPath: _soundData.footstepAudioClips.Array.data[7]
-      value: 
-      objectReference: {fileID: 8300000, guid: 67c8b33e424ccdc4486edf538ab91c5a, type: 3}
-    - target: {fileID: 8285717363463228968, guid: 64dce48905ffd9b4293e595fa6941544,
-        type: 3}
-      propertyPath: _soundData.footstepAudioClips.Array.data[8]
-      value: 
-      objectReference: {fileID: 8300000, guid: 274649b0e221539409070ebf6c18918b, type: 3}
-    - target: {fileID: 8285717363463228968, guid: 64dce48905ffd9b4293e595fa6941544,
-        type: 3}
-      propertyPath: _soundData.footstepAudioClips.Array.data[9]
-      value: 
-      objectReference: {fileID: 8300000, guid: a3194b8bbc96ef84fab1f98f4b7dae3e, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
 --- !u!1 &1237913444
@@ -2558,11 +2521,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e54e5a728a9234ab24fcf1460ed8a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CinemachineCameraTarget: {fileID: 8338988565485460184}
-  TopClamp: 90
-  BottomClamp: 70
-  CameraAngleOverride: 0
-  LockCameraPosition: 1
   actionState: {fileID: 6982812147536782148}
 --- !u!143 &4416926082674713481
 CharacterController:
