@@ -6,10 +6,10 @@ public class PlayerJumpFallHandler: IVerticalMoveHandler
 {
     private ControllerJumpFallData jumpFallData;
     private ControllerAnimationManager animationManager;
-    private float _verticalVelocity;
-    private float _terminalVelocity = 53.0f;
-    private float _jumpTimeoutDelta;
-    private float _fallTimeoutDelta;
+    private float groundedVerticalVelocity = -2f;
+    private float verticalVelocity;
+    private float terminalVelocity = 53.0f;
+    private float fallTimeoutDelta;
     private bool shouldJump;
     private JumpStates jumpingState;
     private bool hasAnimationManager = false;
@@ -17,7 +17,6 @@ public class PlayerJumpFallHandler: IVerticalMoveHandler
     public PlayerJumpFallHandler(ControllerJumpFallData jumpFallData)
     {
         this.jumpFallData = jumpFallData;
-        resetJumpTimeout();
         resetFallTimeout();
         shouldJump = false;
         jumpingState = JumpStates.Grounded;
@@ -49,102 +48,82 @@ public class PlayerJumpFallHandler: IVerticalMoveHandler
 
     private Vector3 JumpAndGravity()
     {
-        if (isOnGround())
-        {
-            handleGroundMechanics();
-        }
-        else
-        {
-            handleInAirMechanics();
-
-        }
+        processCurrentState();
         applyGravity();
         return generateFinalVerticalMovement();
     }
 
-    private void handleGroundMechanics()
+    private void processCurrentState()
     {
-        resetFallTimeout();
-        // stop our velocity dropping infinitely when grounded
-        if (_verticalVelocity < 0.0f)
+        switch (jumpingState)
         {
-            _verticalVelocity = -2f;
+            case JumpStates.Grounded:
+                handleGroundState();
+                break;
+            case JumpStates.Jumping:
+                handleJumpingState();
+                break;
+            case JumpStates.Falling:
+                handleFallingState();
+                break;
+            default:
+                throw new System.Exception("A non-standard jumping state was encountered.");
+        }
+    }
+
+    private void handleGroundState()
+    {
+        if (!isOnGround())
+        {
+            jumpingState = JumpStates.Falling;
         }
         if (shouldJump)
         {
-            tryToJump();
+            // the square root of H * -2 * G = how much velocity needed to reach desired height
+            verticalVelocity = Mathf.Sqrt(jumpFallData.JumpHeight * -2f * jumpFallData.Gravity);
+            jumpingState = JumpStates.Jumping;
+        }
+    }
+
+    private void handleJumpingState()
+    {
+        // fall timeout
+        if (fallTimeoutDelta <= 0.0f)
+        {
+            resetFallTimeout();
+            jumpingState = JumpStates.Falling;
         }
         else
         {
+            fallTimeoutDelta -= Time.deltaTime;
+        }
+    }
+
+    private void handleFallingState()
+    {
+        if (isOnGround())
+        {
+            verticalVelocity = groundedVerticalVelocity;
             jumpingState = JumpStates.Grounded;
         }
-        updateJumpTimeout();
     }
 
     private void resetFallTimeout()
     {
-        _fallTimeoutDelta = jumpFallData.FallTimeout;
-    }
-
-    private void tryToJump()
-    {
-        if (_jumpTimeoutDelta <= 0.0f)
-        {
-            // the square root of H * -2 * G = how much velocity needed to reach desired height
-            _verticalVelocity = Mathf.Sqrt(jumpFallData.JumpHeight * -2f * jumpFallData.Gravity);
-            jumpingState = JumpStates.Jumping;
-        }
-        else
-        {
-            jumpingState = JumpStates.Grounded;
-        }
-    }
-
-    private void updateJumpTimeout()
-    {
-        if (_jumpTimeoutDelta >= 0.0f)
-        {
-            _jumpTimeoutDelta -= Time.deltaTime;
-        }
-    }
-
-    private void handleInAirMechanics()
-    {
-        resetJumpTimeout();
-        handleFalling();
-        // if we are not grounded, do not jump
-        shouldJump = false;
-    }
-
-    private void resetJumpTimeout()
-    {
-        _jumpTimeoutDelta = jumpFallData.JumpTimeout;
-    }
-
-    private void handleFalling()
-    {
-        // fall timeout
-        if (_fallTimeoutDelta >= 0.0f)
-        {
-            _fallTimeoutDelta -= Time.deltaTime;
-        }
-        else
-        {
-            jumpingState = JumpStates.Falling;
-        }
+        fallTimeoutDelta = jumpFallData.FallTimeout;
     }
 
     private void applyGravity()
     {
-        if (_verticalVelocity < _terminalVelocity)
+        if (verticalVelocity < terminalVelocity)
         {
-            _verticalVelocity += jumpFallData.Gravity * Time.deltaTime;
+            verticalVelocity += jumpFallData.Gravity * Time.deltaTime;
         }
     }
 
     private Vector3 generateFinalVerticalMovement()
     {
-        return new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime;
+        return new Vector3(0.0f, verticalVelocity, 0.0f) * Time.deltaTime;
     }
 
     private bool isOnGround()
