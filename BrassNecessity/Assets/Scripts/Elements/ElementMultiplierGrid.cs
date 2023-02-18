@@ -10,6 +10,7 @@ public static class ElementMultiplierGrid
     /// for the corresponding ElementType value. To add a new type, a new row and column
     /// must be added.
     /// </summary>
+    private static float STRONG_MULTIPLIER = 2f;
     private static float[,] elementMultipliers = new float[,]
     {
       {1f, 2f, 1f, 1f, .5f },

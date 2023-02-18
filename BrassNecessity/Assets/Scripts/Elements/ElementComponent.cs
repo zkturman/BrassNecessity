@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ElementBehaviour : MonoBehaviour
+public class ElementComponent : MonoBehaviour
 {
     private ElementPair elementInfo;
     [SerializeField]

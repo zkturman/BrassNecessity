@@ -23,7 +23,7 @@ public class ElementPair
     public ElementPair()
     {
         Primary = generateRandomType();
-        Secondary = generateRandomType();
+        Secondary = ElementType.None;
     }
 
     public ElementPair(ElementType primary)
