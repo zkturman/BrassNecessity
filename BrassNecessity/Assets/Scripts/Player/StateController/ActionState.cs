@@ -13,30 +13,24 @@ public class ActionState : MonoBehaviour, IControllerState
     [SerializeField]
     private ControllerAnimationManager _animData;
 
-    private StarterAssets.StarterAssetsInputs _input;
-    private GameObject _mainCamera;
+    private PlayerControllerInputs _input;
     private CharacterController _controller;
     private Player3DMover mover;
-    private void Awake()
-    {
-    }
+    public IControllerState NextState { get; private set; }
+
     private void Start()
     {
         _animData.Animator = GetComponent<Animator>();
         _controller = GetComponent<CharacterController>();
-        _input = GetComponent<StarterAssets.StarterAssetsInputs>();
+        _input = GetComponent<PlayerControllerInputs>();
         mover = new Player3DMover(_moveData, _jumpData);
         mover.AddAnimationManager(_animData);
+        NextState = this;
     }
 
     public IControllerState GetNextState()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void LateStateUpdate()
-    {
-        throw new System.NotImplementedException();
+        return this;
     }
 
     public void StateUpdate()

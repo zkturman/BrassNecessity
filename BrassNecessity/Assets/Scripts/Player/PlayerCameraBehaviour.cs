@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCameraBehaviour : MonoBehaviour
@@ -37,12 +35,6 @@ public class PlayerCameraBehaviour : MonoBehaviour
     void Start()
     {
         _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void LateUpdate()

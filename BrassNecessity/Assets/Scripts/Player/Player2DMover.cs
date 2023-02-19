@@ -22,7 +22,7 @@ public class Player2DMover: IPlayerMover
         runHandler.EnableAnimations(animManager);
     }
 
-    public void MovePlayer(StarterAssets.StarterAssetsInputs input)
+    public void MovePlayer(PlayerControllerInputs input)
     {
         ICartesianMoveHandler moveHandler = determineMoveHandler(input.sprint);
         Vector3 movement = moveHandler.GenerateMove(input.move);

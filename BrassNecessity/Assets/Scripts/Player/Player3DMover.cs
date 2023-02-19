@@ -29,7 +29,7 @@ public class Player3DMover : IPlayerMover
         walkHandler.EnableAnimations(animationManager);
     }
 
-    public void MovePlayer(StarterAssets.StarterAssetsInputs input)
+    public void MovePlayer(PlayerControllerInputs input)
     {
         ICartesianMoveHandler planarMoveHandler = determinePlanarMoveHandler(input.sprint);
         Vector3 planarMovement = planarMoveHandler.GenerateMove(input.move);

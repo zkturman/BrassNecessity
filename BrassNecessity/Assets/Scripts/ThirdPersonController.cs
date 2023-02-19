@@ -6,45 +6,45 @@ using UnityEngine.InputSystem;
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
  */
 
-namespace StarterAssets
-{
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
     [RequireComponent(typeof(PlayerInput))]
 #endif
-    public class ThirdPersonController : MonoBehaviour
-    {
-        public ActionState actionState;
+public class ThirdPersonController : MonoBehaviour
+{
+    public ActionState ActionState;
+    private IControllerState currentState;
 
-#if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
+    #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
         private PlayerInput _playerInput;
-#endif
-        private StarterAssetsInputs _input;
+    #endif
+    private PlayerControllerInputs _input;
 
-        private bool IsCurrentDeviceMouse
+    private bool IsCurrentDeviceMouse
+    {
+        get
         {
-            get
-            {
-#if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
+            #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
                 return _playerInput.currentControlScheme == "KeyboardMouse";
-#else
-				return false;
-#endif
-            }
+            #else
+			    return false;
+            #endif
         }
+    }
 
-        private void Start()
-        {
-            _input = GetComponent<StarterAssetsInputs>();
-#if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
+    private void Start()
+    {
+        _input = GetComponent<PlayerControllerInputs>();
+        #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
             _playerInput = GetComponent<PlayerInput>();
-#else
-			Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
-#endif
-        }
+        #else
+		    Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
+        #endif
+        currentState = ActionState;
+    }
 
-        private void Update()
-        {
-            actionState.StateUpdate();
-        }
+    private void Update()
+    {
+        currentState.StateUpdate();
+        currentState = currentState.NextState;
     }
 }
