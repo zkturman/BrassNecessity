@@ -10,6 +10,11 @@ public class PlayerControllerInputs : MonoBehaviour
 	public Vector2 look;
 	public bool jump;
 	public bool sprint;
+	public bool lightAttack;
+	public bool strongAttack;
+	public bool applyElement;
+	public int switchWeapon;
+	public bool pause;
 
 	[Header("Movement Settings")]
 	public bool analogMovement;
@@ -41,6 +46,34 @@ public class PlayerControllerInputs : MonoBehaviour
 	{
 		SprintInput(value.isPressed);
 	}
+
+	public void OnLightAttack(InputValue value)
+	{
+		LightAttackInput(value.isPressed);
+	}
+
+	public void OnStrongAttack(InputValue value)
+    {
+		StrongAttackInput(value.isPressed);
+    }
+
+	public void OnSwitchWeapon(InputValue value)
+    {
+		float input = value.Get<float>();
+		SwitchWeaponInput((int)input);
+    }
+
+	public void OnApplyElement(InputValue value)
+    {
+		ApplyElementInput(value.isPressed);
+    }
+
+	public void OnPause(InputValue value)
+    {
+		PauseInput(value.isPressed);
+    }
+
+
 #endif
 
 
@@ -63,6 +96,31 @@ public class PlayerControllerInputs : MonoBehaviour
 	{
 		sprint = newSprintState;
 	}
+
+	public void LightAttackInput(bool newAttackState)
+    {
+		lightAttack = newAttackState;
+    }
+
+	public void StrongAttackInput(bool newAttackState)
+    {
+		strongAttack = newAttackState;
+    }
+
+	public void SwitchWeaponInput(int newSwitchValue)
+    {
+		switchWeapon = newSwitchValue;
+    }
+
+	public void ApplyElementInput(bool newApplyState)
+    {
+		applyElement = newApplyState;
+    }
+
+	public void PauseInput(bool newPauseValue)
+    {
+		pause = newPauseValue;
+    }
 
 	private void OnApplicationFocus(bool hasFocus)
 	{

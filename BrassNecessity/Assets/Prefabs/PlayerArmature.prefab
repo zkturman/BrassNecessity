@@ -1035,6 +1035,9 @@ GameObject:
   - component: {fileID: 4416926081852918491}
   - component: {fileID: 4416926081852918490}
   - component: {fileID: 8116256990303697861}
+  - component: {fileID: 3722559962718553950}
+  - component: {fileID: 8312304992163709425}
+  - component: {fileID: 1701113942750028898}
   - component: {fileID: 8285717363463228968}
   - component: {fileID: 5885216827943657505}
   - component: {fileID: 135756642000475821}
@@ -1115,7 +1118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e54e5a728a9234ab24fcf1460ed8a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionState: {fileID: 8116256990303697861}
+  ActionState: {fileID: 8116256990303697861}
 --- !u!114 &8116256990303697861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1154,6 +1157,45 @@ MonoBehaviour:
     JumpAnimationId: Jump
     FreeFallAnimationId: FreeFall
     MotionSpeedAnimationId: MotionSpeed
+--- !u!114 &3722559962718553950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4416926081852918481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 353aed6d3173985438b10676b64ed867, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightAttackTimeout: 0.5
+  strongAttackTimeout: 1
+--- !u!114 &8312304992163709425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4416926081852918481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab8c6d8ad370fb64699011c10e2a3878, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  switchTimeout: 0.5
+--- !u!114 &1701113942750028898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4416926081852918481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7a6ada8e3279e44e9433e54e9d5a6a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8285717363463228968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1213,6 +1255,11 @@ MonoBehaviour:
   look: {x: 0, y: 0}
   jump: 0
   sprint: 0
+  lightAttack: 0
+  strongAttack: 0
+  applyElement: 0
+  switchWeapon: 0
+  pause: 0
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1

@@ -33,9 +33,43 @@ public class ActionState : MonoBehaviour, IControllerState
         return this;
     }
 
+    public void StateReset()
+    {
+        NextState = this;
+        _input.pause = false;
+        _input.jump = false;
+    }
+
     public void StateUpdate()
     {
-        mover.MovePlayer(_input);
+        if (_input.pause)
+        {
+            NextState = GetComponent<PauseState>();
+        }
+        else if (_input.lightAttack)
+        {
+            _input.lightAttack = false;
+            AttackState attackState = GetComponent<AttackState>();
+            attackState.IsStrongAttack = false;
+            NextState = attackState;
+        }
+        else if (_input.strongAttack)
+        {
+            _input.strongAttack = false;
+            AttackState attackState = GetComponent<AttackState>();
+            attackState.IsStrongAttack = true;
+            NextState = attackState;
+        }
+        else if (_input.switchWeapon != 0)
+        {
+            WeaponSwitchState weaponSwitchState = GetComponent<WeaponSwitchState>();
+            weaponSwitchState.SwitchValue = _input.switchWeapon;
+            NextState = weaponSwitchState;
+        }
+        else
+        {
+            mover.MovePlayer(_input);
+        }
     }
 
     private void OnDrawGizmosSelected()

@@ -1,18 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PauseState : MonoBehaviour
+public class PauseState : MonoBehaviour, IControllerState
 {
-    // Start is called before the first frame update
-    void Start()
+    private PlayerControllerInputs _input;
+    public IControllerState NextState {get; private set;}
+
+    private void Awake()
     {
-        
+        _input = GetComponent<PlayerControllerInputs>();
+        NextState = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    public IControllerState GetNextState()
     {
-        
+        return NextState;
+    }
+
+    public void StateReset()
+    {
+        _input.pause = false;
+        NextState = this;
+        Debug.Log("Switched to pause state.");
+    }
+
+    public void StateUpdate()
+    {
+        if (_input.pause)
+        {
+            NextState = GetComponent<ActionState>();
+            Debug.Log("Switched to action state.");
+        }
     }
 }

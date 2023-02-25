@@ -2,17 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ElementApplyState : MonoBehaviour
+public class ElementApplyState : MonoBehaviour, IControllerState
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private float applyTimeout = 0.5f;
+    private FrameTimeoutHandler timeoutHandler;
+
+    private void Awake()
     {
-        
+        timeoutHandler = new FrameTimeoutHandler(applyTimeout);
     }
 
-    // Update is called once per frame
-    void Update()
+    public IControllerState NextState { get; set; }
+
+    public IControllerState GetNextState()
     {
-        
+        return NextState;
+    }
+
+    public void StateReset()
+    {
+        timeoutHandler.ResetTimeout();
+        NextState = this;
+    }
+
+    public void StateUpdate()
+    {
+        timeoutHandler.UpdateTimePassed(Time.deltaTime);
+        if (timeoutHandler.HasTimeoutEnded())
+        {
+            NextState = GetComponent<ActionState>();
+        }
     }
 }
