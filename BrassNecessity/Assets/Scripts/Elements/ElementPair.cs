@@ -22,7 +22,7 @@ public class ElementPair
     }
     public ElementPair()
     {
-        Primary = generateRandomType();
+        Primary = ElementTypeHelper.GenerateRandomType();
         Secondary = ElementType.None;
     }
 
@@ -46,12 +46,5 @@ public class ElementPair
             finalMultiplier *= ElementMultiplierGrid.GetAttackMultiplier(Secondary, defendingType.Secondary);
         }
         return finalMultiplier;
-    }
-
-    private ElementType generateRandomType()
-    {
-        int numberOfElements = Enum.GetNames(typeof(ElementType)).Length;
-        int diceRoll = UnityEngine.Random.Range(0, numberOfElements);
-        return (ElementType)diceRoll;
     }
 }
