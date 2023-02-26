@@ -4,18 +4,20 @@ using UnityEngine;
 [SelectionBase]    // (If you click any child objects in the inspector, it will automatically select the parent object which contains this script)
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(ElementComponent))]
 public class EnemyController : MonoBehaviour
 {
     // Enemy properties (public so the state classes can access them)
     [HideInInspector] public CharacterController charaController;
     [HideInInspector] public Animator animator;
     [HideInInspector] public GameObject target;
+    [HideInInspector] public ElementComponent element;
     public float moveSpeed = 1f;    // Units per second
     public float turnSpeed = 90f;   // Degrees per second
     public float rotationFactorPerFrame;   // *** TESTING - may replace the turnSpeed variable above ***
     public float attackDistance = 1.5f;   // How close to move to the player before standing still and hitting
     public EnemySpawnManager spawnManager;
-
+    
 
     // State machine properties
     EnemyBaseState currentState;
@@ -31,6 +33,7 @@ public class EnemyController : MonoBehaviour
         charaController= GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         target = GameObject.FindGameObjectWithTag("Player");
+        element = GetComponent<ElementComponent>();
     }
 
 
