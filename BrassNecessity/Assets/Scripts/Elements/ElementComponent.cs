@@ -4,21 +4,19 @@ using UnityEngine;
 
 public class ElementComponent : MonoBehaviour
 {
-    private ElementPair elementInfo;
+    public ElementPair ElementInfo { get; private set; }
     [SerializeField]
     private ElementType primaryType;
     [SerializeField]
     private ElementType secondaryType;
 
-    private void Awake()
-    {
-        elementInfo = new ElementPair(primaryType, secondaryType);
-    }
-
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (ElementInfo == null)
+        {
+            ElementInfo = new ElementPair(primaryType, secondaryType);
+        }
     }
 
     // Update is called once per frame
@@ -29,11 +27,14 @@ public class ElementComponent : MonoBehaviour
 
     public void SwitchType(ElementType newType)
     {
-        elementInfo = new ElementPair(newType);
+        primaryType = newType;
+        ElementInfo = new ElementPair(newType);
     }
 
     public void SwitchType(ElementType newPrimaryType, ElementType newSecondaryType)
     {
-        elementInfo = new ElementPair(newPrimaryType, newSecondaryType);
+        primaryType = newPrimaryType;
+        secondaryType = newSecondaryType;
+        ElementInfo = new ElementPair(newPrimaryType, newSecondaryType);
     }
 }
