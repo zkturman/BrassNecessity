@@ -6,9 +6,9 @@ public class ElementComponent : MonoBehaviour
 {
     public ElementPair ElementInfo { get; private set; }
     [SerializeField]
-    private ElementType primaryType;
+    private Element.Type primaryType;
     [SerializeField]
-    private ElementType secondaryType;
+    private Element.Type secondaryType;
 
     // Start is called before the first frame update
     void Start()
@@ -25,16 +25,24 @@ public class ElementComponent : MonoBehaviour
         
     }
 
-    public void SwitchType(ElementType newType)
+    public void SwitchType(Element.Type newType)
     {
         primaryType = newType;
         ElementInfo = new ElementPair(newType);
+        secondaryType = ElementInfo.Secondary;
     }
 
-    public void SwitchType(ElementType newPrimaryType, ElementType newSecondaryType)
+    public void SwitchType(Element.Type newPrimaryType, Element.Type newSecondaryType)
     {
         primaryType = newPrimaryType;
         secondaryType = newSecondaryType;
         ElementInfo = new ElementPair(newPrimaryType, newSecondaryType);
+    }
+
+    public void SwitchTypeRandom()
+    {
+        ElementInfo = new ElementPair();
+        primaryType = ElementInfo.Primary;
+        secondaryType = ElementInfo.Secondary;
     }
 }

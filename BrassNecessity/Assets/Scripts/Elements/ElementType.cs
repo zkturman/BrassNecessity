@@ -3,21 +3,22 @@ using System;
 /// <summary>
 /// To expand list, ElementMultiplierGrid must also be expanded.
 /// </summary>
-public enum ElementType
-{
-    None,
-    Carbon,
-    Electric,
-    Gravity,
-    Nuclear,
-}
 
-public static class ElementTypeHelper
+public static class Element
 {
-    public static ElementType GenerateRandomType()
+    public enum Type
     {
-        int numberOfElements = Enum.GetNames(typeof(ElementType)).Length;
+        None,
+        Carbon,
+        Electric,
+        Gravity,
+        Nuclear
+    }
+
+    public static Type GenerateRandomType()
+    {
+        int numberOfElements = Enum.GetNames(typeof(Type)).Length;
         int diceRoll = UnityEngine.Random.Range(0, numberOfElements);
-        return (ElementType)diceRoll;
+        return (Type)diceRoll;
     }
 }

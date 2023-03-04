@@ -6,33 +6,34 @@ using System;
 public class ElementPair
 {
     [SerializeReference]
-    private ElementType _primary;
-    public ElementType Primary 
+    private Element.Type _primary;
+    public Element.Type Primary 
     { 
         get => _primary; 
         private set => _primary = value; 
     }
 
     [SerializeReference]
-    private ElementType _secondary;
-    public ElementType Secondary 
+    private Element.Type _secondary;
+    public Element.Type Secondary 
     { 
         get => _secondary; 
         private set => _secondary = value; 
     }
+
     public ElementPair()
     {
-        Primary = ElementTypeHelper.GenerateRandomType();
-        Secondary = ElementType.None;
+        Primary = Element.GenerateRandomType();
+        Secondary = Element.Type.None;
     }
 
-    public ElementPair(ElementType primary)
+    public ElementPair(Element.Type primary)
     {
         Primary = primary;
-        Secondary = ElementType.None;
+        Secondary = Element.Type.None;
     }
 
-    public ElementPair(ElementType primary, ElementType secondary)
+    public ElementPair(Element.Type primary, Element.Type secondary)
     {
         Primary = primary;
         Secondary = secondary;
@@ -41,7 +42,7 @@ public class ElementPair
     public float GetAttackingMultiplier(ElementPair defendingType)
     {
         float finalMultiplier = ElementMultiplierGrid.GetAttackMultiplier(Primary, defendingType.Primary);
-        if (Secondary != ElementType.None)
+        if (Secondary != Element.Type.None)
         {
             finalMultiplier *= ElementMultiplierGrid.GetAttackMultiplier(Secondary, defendingType.Secondary);
         }
