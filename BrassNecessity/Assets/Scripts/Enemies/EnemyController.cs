@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.AI;
 
 [SelectionBase]    // (If you click any child objects in the inspector, it will automatically select the parent object which contains this script)
 [RequireComponent(typeof(CharacterController))]
