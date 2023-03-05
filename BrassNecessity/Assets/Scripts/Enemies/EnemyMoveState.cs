@@ -15,8 +15,8 @@ public class EnemyMoveState : EnemyBaseState
     public override void UpdateState(EnemyController context)
     {
         // *** TEST *** Disabling the code to switch to attack mode 
-          
-        
+
+
         // Test if the player is in attack range
         Vector3 targetVector = context.target.transform.position - context.transform.position;
         float targetDistance = targetVector.magnitude;

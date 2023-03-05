@@ -29,11 +29,12 @@ public class EnemyController : MonoBehaviour
 
     private void Awake()
     {
-        currentState = MoveState;
+        //currentState = MoveState;
         charaController= GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         target = GameObject.FindGameObjectWithTag("Player");
         element = GetComponent<ElementComponent>();
+        SwitchState(MoveState);
     }
 
 
