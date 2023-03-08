@@ -514,63 +514,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1137854035}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &685366448 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544,
-    type: 3}
-  m_PrefabInstance: {fileID: 1137854035}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &685366453 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8116256990303697861, guid: 64dce48905ffd9b4293e595fa6941544,
-    type: 3}
-  m_PrefabInstance: {fileID: 1137854035}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685366448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b517b52958413740b161de6b6989017, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &685366459
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685366448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7a6ada8e3279e44e9433e54e9d5a6a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &685366460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685366448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 353aed6d3173985438b10676b64ed867, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lightAttackTimeout: 0.5
-  strongAttackTimeout: 1
---- !u!114 &685366461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685366448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab8c6d8ad370fb64699011c10e2a3878, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  switchTimeout: 0.5
 --- !u!1 &713235950
 GameObject:
   m_ObjectHideFlags: 0
@@ -1138,11 +1081,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerArmature
       objectReference: {fileID: 0}
-    - target: {fileID: 4416926081852918490, guid: 64dce48905ffd9b4293e595fa6941544,
-        type: 3}
-      propertyPath: ActionState
-      value: 
-      objectReference: {fileID: 685366453}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
 --- !u!1 &1237913444
