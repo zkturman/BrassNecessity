@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteAlways]
 public class ElementComponent : MonoBehaviour
 {
     public ElementPair ElementInfo { get; private set; }
@@ -9,6 +10,14 @@ public class ElementComponent : MonoBehaviour
     private Element.Type primaryType;
     [SerializeField]
     private Element.Type secondaryType;
+
+    private void Awake()
+    {
+        if (!Application.IsPlaying(gameObject))
+        {
+            ElementInfo = new ElementPair(primaryType);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +31,10 @@ public class ElementComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (!Application.IsPlaying(gameObject))
+        {
+            ElementInfo = new ElementPair(primaryType, secondaryType);
+        }
     }
 
     public void SwitchType(Element.Type newType)
@@ -44,5 +56,11 @@ public class ElementComponent : MonoBehaviour
         ElementInfo = new ElementPair();
         primaryType = ElementInfo.Primary;
         secondaryType = ElementInfo.Secondary;
+    }
+
+    [ContextMenu("Update Element")]
+    private void UpdateElement()
+    {
+        SwitchType(primaryType);
     }
 }
