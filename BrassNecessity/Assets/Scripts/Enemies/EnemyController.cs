@@ -1,40 +1,53 @@
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.AI;
 
-[SelectionBase]    // (If you click any child objects in the inspector, it will automatically select the parent object which contains this script)
-[RequireComponent(typeof(CharacterController))]
+[SelectionBase]    // (If you click any child objects in the inspector, it will automatically select the parent object which contains this script
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(ElementComponent))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class EnemyController : MonoBehaviour
 {
     // Enemy properties (public so the state classes can access them)
-    [HideInInspector] public CharacterController charaController;
     [HideInInspector] public Animator animator;
-    [HideInInspector] public GameObject target;
-    [HideInInspector] public ElementComponent element;
-    public float moveSpeed = 1f;    // Units per second
-    public float turnSpeed = 90f;   // Degrees per second
-    public float rotationFactorPerFrame;   // *** TESTING - may replace the turnSpeed variable above ***
-    public float attackDistance = 1.5f;   // How close to move to the player before standing still and hitting
+    [HideInInspector] public NavMeshAgent navAgent;
+    [HideInInspector] public Transform target;
+    [HideInInspector] public ElementComponent enemyElement;
     public EnemySpawnManager spawnManager;
-    
+    public float farAttackDistance = 2f;   // The furthest distance from the player that the enemy will attack
+    public float closeAttackDistance = 1f;
+
+
+    // -----------------------------------------------------------
+    // *** Not needed now we're not using CharacterController comnponent...??
+    //public float moveSpeed = 1f;    // Units per second
+    //public float turnSpeed = 90f;   // Degrees per second
+    //public float rotationFactorPerFrame;   // *** TESTING - may replace the turnSpeed variable above ***
+    // -----------------------------------------------------------
+
+
+
 
     // State machine properties
     EnemyBaseState currentState;
     public EnemyIdleState IdleState = new EnemyIdleState();    // These 'potential' states need to be public so that the concrete State classes can refer to them when telling the Controller which state to switch to
     public EnemyMoveState MoveState = new EnemyMoveState();
     public EnemyAttackState AttackState = new EnemyAttackState();
+    public EnemyBackPedalState BackPedalState = new EnemyBackPedalState();
     public EnemyDieState DieState = new EnemyDieState();
 
 
     private void Awake()
     {
-        //currentState = MoveState;
-        charaController= GetComponent<CharacterController>();
+        // NavMeshAgent
+        navAgent = GetComponent<NavMeshAgent>();
+        target = GameObject.FindGameObjectWithTag("Player").transform;
+        navAgent.isStopped = true;
+
         animator = GetComponent<Animator>();
-        target = GameObject.FindGameObjectWithTag("Player");
-        element = GetComponent<ElementComponent>();
-        SwitchState(MoveState);
+        enemyElement = GetComponent<ElementComponent>();
+        
+        SwitchState(IdleState);
     }
 
 
@@ -70,7 +83,37 @@ public class EnemyController : MonoBehaviour
     }
 
 
-    [ContextMenu("Kill enemy (debug)")]
+    public enum PlayerDistance
+    {
+        Far,
+        AttackRange,
+        TooClose
+    }
+
+
+    public PlayerDistance CheckPlayerDistance()
+    {
+        // Test if the player is still in range
+        Vector3 playerVector = target.position - transform.position;
+        float playerDistance = playerVector.magnitude;
+
+        PlayerDistance result;
+        if (playerDistance > farAttackDistance)
+        {
+            result = PlayerDistance.Far;
+        } else if (playerDistance <= farAttackDistance && playerDistance >= closeAttackDistance)
+        {
+            result = PlayerDistance.AttackRange;
+        } else
+        {
+            result = PlayerDistance.TooClose;
+        }
+
+        return result;
+    }
+
+
+    [ContextMenu("Kill this enemy (debug)")]
     private void Debug_KillEnemy()
     {
         SwitchState(DieState);

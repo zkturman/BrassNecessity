@@ -4,54 +4,36 @@ using UnityEngine;
 
 public class EnemyMoveState : EnemyBaseState
 {
-    
+   
+
     public override void EnterState(EnemyController context)
     {
+        context.navAgent.isStopped = false;
+        context.navAgent.SetDestination(context.target.position);
+        context.animator.SetBool("PlayerInHitDistance", false);
+        context.animator.SetBool("PlayerTooClose", false);
         context.animator.SetBool("CanSeePlayer", true);
-
     }
 
 
     public override void UpdateState(EnemyController context)
     {
-        // *** TEST *** Disabling the code to switch to attack mode 
-
-
         // Test if the player is in attack range
-        Vector3 targetVector = context.target.transform.position - context.transform.position;
-        float targetDistance = targetVector.magnitude;
-        
-        if (targetDistance <= context.attackDistance)
+        EnemyController.PlayerDistance playerDist = context.CheckPlayerDistance();
+
+        if (playerDist == EnemyController.PlayerDistance.AttackRange)
         {
             // Switch to the attack state
-            //Debug.Log("EnemyMoveState.UpdateState() thinks it is within hitting distance of the player");
             context.SwitchState(context.AttackState);
+        } else if (playerDist == EnemyController.PlayerDistance.TooClose)
+        {
+            // If the enemy has already got too close
+            context.SwitchState(context.BackPedalState);
         } else
         {
-        
-            context.charaController.Move(targetVector.normalized * context.moveSpeed * Time.deltaTime);
-            Quaternion qtr = Quaternion.LookRotation(targetVector, Vector3.up);
-            context.transform.rotation = qtr;
-
-        
+            // Update NavMeshAgent to move to player's latest position
+            context.navAgent.SetDestination(context.target.position);
         }
-        
-
-        /*    // THIS ALSO DOESN'T SEEM TO WORK
-        // Rotate towards player
-        Vector3 targetDirection = context.target.transform.position - context.transform.position;
-        Debug.DrawRay(context.transform.position, targetDirection, Color.red);
-        context.transform.rotation.SetLookRotation(targetDirection);
-        
-         // Move character controller in current forwards direction
-        Vector3 forwardDirectionGlobal = context.transform.TransformDirection(Vector3.forward);
-        context.charaController.SimpleMove(targetDirection.normalized * context.moveSpeed);
-         */
-
-
-
-
-
     }
 
     public override void CollisonEntered(EnemyController context, Collision collision)
