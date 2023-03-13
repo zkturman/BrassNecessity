@@ -10,8 +10,7 @@ public class PlayerControllerInputs : MonoBehaviour
 	public Vector2 look;
 	public bool jump;
 	public bool sprint;
-	public bool lightAttack;
-	public bool strongAttack;
+	public bool shoot;
 	public bool applyElement;
 	public int switchWeapon;
 	public bool pause;
@@ -47,15 +46,10 @@ public class PlayerControllerInputs : MonoBehaviour
 		SprintInput(value.isPressed);
 	}
 
-	public void OnLightAttack(InputValue value)
+	public void OnShoot(InputValue value)
 	{
-		LightAttackInput(value.isPressed);
+		ShootInput(value.isPressed);
 	}
-
-	public void OnStrongAttack(InputValue value)
-    {
-		StrongAttackInput(value.isPressed);
-    }
 
 	public void OnSwitchWeapon(InputValue value)
     {
@@ -97,14 +91,9 @@ public class PlayerControllerInputs : MonoBehaviour
 		sprint = newSprintState;
 	}
 
-	public void LightAttackInput(bool newAttackState)
+	public void ShootInput(bool newShootState)
     {
-		lightAttack = newAttackState;
-    }
-
-	public void StrongAttackInput(bool newAttackState)
-    {
-		strongAttack = newAttackState;
+		shoot = newShootState;
     }
 
 	public void SwitchWeaponInput(int newSwitchValue)

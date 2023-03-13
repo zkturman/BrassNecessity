@@ -58,8 +58,7 @@ public class ElementComponent : MonoBehaviour
         secondaryType = ElementInfo.Secondary;
     }
 
-    [ContextMenu("Update Element")]
-    private void UpdateElement()
+    public void UpdateElement()
     {
         SwitchType(primaryType);
     }

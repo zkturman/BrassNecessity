@@ -5,16 +5,38 @@ using UnityEngine;
 public class AttackState : MonoBehaviour, IControllerState
 {
     public IControllerState NextState { get; private set; }
-    public bool IsStrongAttack { get; set; }
     [SerializeField]
-    private float lightAttackTimeout = 0.5f;
+    private float shootTimeout = 0.5f;
+
     [SerializeField]
-    private float strongAttackTimeout = 1f;
+    private WeaponBehaviour laserGun;
+    [SerializeField]
+    private PlayerControllerInputs input;
+    [SerializeField]
+    private ControllerAnimationManager animData;
+    [SerializeField]
+    private ControllerMoveData moveData;
+    [SerializeField]
+    private ControllerJumpFallData jumpFallData;
+
+    private PlayerMover mover;
+
     private FrameTimeoutHandler attackTimeoutHandler;
 
     private void Awake()
     {
         attackTimeoutHandler = new FrameTimeoutHandler(0f);
+        input = GetComponent<PlayerControllerInputs>();
+        animData.Animator = GetComponent<Animator>();
+        if (input.analogMovement)
+        {
+            mover = new PlayerMover(moveData, jumpFallData);
+        }
+        else
+        {
+            mover = new Player1DMover(moveData, jumpFallData);
+        }
+        mover.AddAnimationManager(animData);
     }
 
     public IControllerState GetNextState()
@@ -22,34 +44,29 @@ public class AttackState : MonoBehaviour, IControllerState
         return NextState;
     }
 
-    public void StateReset()
+    public void StateEnter()
     {
         NextState = this;
         float timeout = determineTimeout();
         attackTimeoutHandler.ResetTimeout(timeout);
-        Debug.Log(string.Format("Using {0} attack.", IsStrongAttack ? "strong" : "light"));
     }
 
     private float determineTimeout()
     {
-        float newTimeout;
-        if (IsStrongAttack)
-        {
-            newTimeout = strongAttackTimeout;
-        }
-        else
-        {
-            newTimeout = lightAttackTimeout;
-        }
-        return newTimeout;
+        return shootTimeout;
     }
 
     public void StateUpdate()
     {
-        attackTimeoutHandler.UpdateTimePassed(Time.deltaTime);
-        if (attackTimeoutHandler.HasTimeoutEnded())
-        {
+        if (!input.shoot){
             NextState = GetComponent<ActionState>();
+            laserGun.ReleaseLaser();
+        }
+        else
+        {
+            laserGun.FireLaser();
+            mover.MovePlayer(input);
+
         }
     }
 }
