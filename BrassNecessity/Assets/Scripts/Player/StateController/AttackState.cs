@@ -19,7 +19,11 @@ public class AttackState : MonoBehaviour, IControllerState
     [SerializeField]
     private ControllerJumpFallData jumpFallData;
 
+    private Player1DMover mover1D;
+    private PlayerMover mover2D;
+    
     private PlayerMover mover;
+    private ElementApplyState applyState;
 
     private FrameTimeoutHandler attackTimeoutHandler;
 
@@ -28,15 +32,12 @@ public class AttackState : MonoBehaviour, IControllerState
         attackTimeoutHandler = new FrameTimeoutHandler(0f);
         input = GetComponent<PlayerControllerInputs>();
         animData.Animator = GetComponent<Animator>();
-        if (input.analogMovement)
-        {
-            mover = new PlayerMover(moveData, jumpFallData);
-        }
-        else
-        {
-            mover = new Player1DMover(moveData, jumpFallData);
-        }
-        mover.AddAnimationManager(animData);
+        mover1D = new Player1DMover(moveData, jumpFallData);
+        mover2D = new PlayerMover(moveData, jumpFallData);
+        mover1D.AddAnimationManager(animData);
+        mover2D.AddAnimationManager(animData);
+        determineMover();
+        applyState = GetComponent<ElementApplyState>();
     }
 
     public IControllerState GetNextState()
@@ -58,15 +59,37 @@ public class AttackState : MonoBehaviour, IControllerState
 
     public void StateUpdate()
     {
-        if (!input.shoot){
+        if (shouldApplyElement())
+        {
+            NextState = GetComponent<ElementApplyState>();
+        }
+        else if (!input.shoot)
+        {
             NextState = GetComponent<ActionState>();
             laserGun.ReleaseLaser();
         }
         else
         {
             laserGun.FireLaser();
+            determineMover();
             mover.MovePlayer(input);
-
         }
+    }
+
+    private void determineMover()
+    {
+        if (CurrentDevice.IsCurrentDeviceKeyboard())
+        {
+            mover = mover1D;
+        }
+        else
+        {
+            mover = mover2D;
+        }
+    }
+
+    private bool shouldApplyElement()
+    {
+        return input.applyElement && applyState.HasElements();
     }
 }

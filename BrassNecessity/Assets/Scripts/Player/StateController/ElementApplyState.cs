@@ -56,4 +56,9 @@ public class ElementApplyState : MonoBehaviour, IControllerState
         availableElements.Enqueue(nextElement);
         Debug.Log("Added element " + nextElement.ElementInfo.Primary);
     }
+
+    public bool HasElements()
+    {
+        return availableElements.Count > 0;
+    }
 }

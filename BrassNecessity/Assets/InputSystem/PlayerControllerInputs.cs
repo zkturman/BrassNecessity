@@ -14,6 +14,8 @@ public class PlayerControllerInputs : MonoBehaviour
 	public bool applyElement;
 	public int switchWeapon;
 	public bool pause;
+	private PlayerInput playerInput;
+	private string lastControlScheme;
 
 	[Header("Movement Settings")]
 	public bool analogMovement;
@@ -70,8 +72,13 @@ public class PlayerControllerInputs : MonoBehaviour
 
 #endif
 
-
-	public void MoveInput(Vector2 newMoveDirection)
+    private void Awake()
+    {
+		playerInput = GetComponent<PlayerInput>();
+		lastControlScheme = playerInput.currentControlScheme;
+		CurrentDevice.DeviceScheme = lastControlScheme;
+    }
+    public void MoveInput(Vector2 newMoveDirection)
 	{
 		move = newMoveDirection;
 	} 
@@ -120,4 +127,13 @@ public class PlayerControllerInputs : MonoBehaviour
 	{
 		Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
 	}
+
+    private void Update()
+    {
+		if (lastControlScheme != playerInput.currentControlScheme)
+        {
+			CurrentDevice.DeviceScheme = playerInput.currentControlScheme;
+			lastControlScheme = playerInput.currentControlScheme;
+        }
+    }
 }
