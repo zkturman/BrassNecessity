@@ -19,10 +19,7 @@ public class AttackState : MonoBehaviour, IControllerState
     [SerializeField]
     private ControllerJumpFallData jumpFallData;
 
-    private Player1DMover mover1D;
-    private PlayerMover mover2D;
-    
-    private PlayerMover mover;
+    private InputAgnosticMover mover;
     private ElementApplyState applyState;
 
     private FrameTimeoutHandler attackTimeoutHandler;
@@ -32,11 +29,8 @@ public class AttackState : MonoBehaviour, IControllerState
         attackTimeoutHandler = new FrameTimeoutHandler(0f);
         input = GetComponent<PlayerControllerInputs>();
         animData.Animator = GetComponent<Animator>();
-        mover1D = new Player1DMover(moveData, jumpFallData);
-        mover2D = new PlayerMover(moveData, jumpFallData);
-        mover1D.AddAnimationManager(animData);
-        mover2D.AddAnimationManager(animData);
-        determineMover();
+        mover = new InputAgnosticMover(moveData, jumpFallData);
+        mover.AddAnimationManager(animData);
         applyState = GetComponent<ElementApplyState>();
     }
 
@@ -71,20 +65,7 @@ public class AttackState : MonoBehaviour, IControllerState
         else
         {
             laserGun.FireLaser();
-            determineMover();
             mover.MovePlayer(input);
-        }
-    }
-
-    private void determineMover()
-    {
-        if (CurrentDevice.IsCurrentDeviceKeyboard())
-        {
-            mover = mover1D;
-        }
-        else
-        {
-            mover = mover2D;
         }
     }
 

@@ -11,8 +11,8 @@ public class PlayerControllerInputs : MonoBehaviour
 	public bool jump;
 	public bool sprint;
 	public bool shoot;
+	public bool strafe;
 	public bool applyElement;
-	public int switchWeapon;
 	public bool pause;
 	private PlayerInput playerInput;
 	private string lastControlScheme;
@@ -53,10 +53,9 @@ public class PlayerControllerInputs : MonoBehaviour
 		ShootInput(value.isPressed);
 	}
 
-	public void OnSwitchWeapon(InputValue value)
+	public void OnStrafe(InputValue value)
     {
-		float input = value.Get<float>();
-		SwitchWeaponInput((int)input);
+		StrafeInput(value.isPressed);
     }
 
 	public void OnApplyElement(InputValue value)
@@ -103,9 +102,9 @@ public class PlayerControllerInputs : MonoBehaviour
 		shoot = newShootState;
     }
 
-	public void SwitchWeaponInput(int newSwitchValue)
+    public void StrafeInput(bool newStrafeState)
     {
-		switchWeapon = newSwitchValue;
+		strafe = newStrafeState;
     }
 
 	public void ApplyElementInput(bool newApplyState)

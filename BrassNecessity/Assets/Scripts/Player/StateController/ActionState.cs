@@ -18,9 +18,7 @@ public class ActionState : MonoBehaviour, IControllerState
 
     private PlayerControllerInputs _input;
     private CharacterController _controller;
-    private PlayerMover mover2D;
-    private Player1DMover mover1D;
-    private PlayerMover mover;
+    private InputAgnosticMover mover;
     public IControllerState NextState { get; private set; }
 
     private void Start()
@@ -29,11 +27,8 @@ public class ActionState : MonoBehaviour, IControllerState
         _controller = GetComponent<CharacterController>();
         _input = GetComponent<PlayerControllerInputs>();
         applyState = GetComponent<ElementApplyState>();
-        mover1D = new Player1DMover(_moveData, _jumpData);
-        mover1D.AddAnimationManager(_animData);
-        mover2D = new PlayerMover(_moveData, _jumpData);
-        mover2D.AddAnimationManager(_animData);
-        configureMover();
+        mover = new InputAgnosticMover(_moveData, _jumpData);
+        mover.AddAnimationManager(_animData);
         NextState = this;
     }
 
@@ -65,7 +60,6 @@ public class ActionState : MonoBehaviour, IControllerState
         }
         else
         {
-            configureMover();
             mover.MovePlayer(_input);
             detectCollision();
         }
@@ -100,17 +94,5 @@ public class ActionState : MonoBehaviour, IControllerState
         Gizmos.DrawSphere(
             new Vector3(transform.position.x, transform.position.y - _jumpData.GroundedOffset, transform.position.z),
             _jumpData.GroundedRadius);
-    }
-
-    private void configureMover()
-    {
-        if (CurrentDevice.IsCurrentDeviceKeyboard())
-        {
-            mover = mover1D;
-        }
-        else
-        {
-            mover = mover2D;
-        }
     }
 }

@@ -8,11 +8,19 @@ public class ElementApplyState : MonoBehaviour, IControllerState
     private float applyTimeout = 0.5f;
     [SerializeField]
     private GameObject playerLaser;
+    [SerializeField]
+    private ControllerMoveData moveData;
+    [SerializeField]
+    private ControllerJumpFallData jumpData;
+    [SerializeField]
+    private ControllerAnimationManager animationManager;
+
     private ElementComponent laserElement;
     private PlayerControllerInputs input;
 
     private FrameTimeoutHandler timeoutHandler;
     private Queue<ElementComponent> availableElements;
+    private InputAgnosticMover mover;
 
     private void Awake()
     {
@@ -20,6 +28,8 @@ public class ElementApplyState : MonoBehaviour, IControllerState
         laserElement = playerLaser.GetComponent<ElementComponent>();
         availableElements = new Queue<ElementComponent>();
         input = GetComponent<PlayerControllerInputs>();
+        mover = new InputAgnosticMover(moveData, jumpData);
+        mover.AddAnimationManager(animationManager);
     }
 
     public IControllerState NextState { get; set; }
@@ -36,7 +46,6 @@ public class ElementApplyState : MonoBehaviour, IControllerState
         {
             ElementComponent newElement = availableElements.Dequeue();
             laserElement.SwitchType(newElement.ElementInfo.Primary);
-            Debug.Log("Applying element " + newElement.ElementInfo.Primary);
         }
         NextState = this;
     }
@@ -48,6 +57,10 @@ public class ElementApplyState : MonoBehaviour, IControllerState
         {
             NextState = GetComponent<ActionState>();
             input.applyElement = false;
+        }
+        else
+        {
+            mover.MovePlayer(input);
         }
     }
 

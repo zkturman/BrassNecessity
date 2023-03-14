@@ -1725,7 +1725,7 @@ MonoBehaviour:
     SprintSpeed: 5.335
     ReverseSprintSpeed: 4.5
     RotationSmoothTime: 0.12
-    RotationSpeed: 10
+    RotationSpeed: 35
     SpeedChangeRate: 10
     TransformReference: {fileID: 1284542973745687367}
     ControllerReference: {fileID: 1284542972771108735}
@@ -1776,7 +1776,7 @@ MonoBehaviour:
     SprintSpeed: 4.5
     ReverseSprintSpeed: 4
     RotationSmoothTime: 0.12
-    RotationSpeed: 10
+    RotationSpeed: 35
     SpeedChangeRate: 10
     TransformReference: {fileID: 1284542973745687367}
     ControllerReference: {fileID: 1284542972771108735}
@@ -1865,8 +1865,8 @@ MonoBehaviour:
   jump: 0
   sprint: 0
   shoot: 0
+  strafe: 0
   applyElement: 0
-  switchWeapon: 0
   pause: 0
   analogMovement: 0
   cursorLocked: 1
@@ -2017,6 +2017,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   applyTimeout: 0.5
   playerLaser: {fileID: 1284542972368637847}
+  moveData:
+    MoveSpeed: 1.6
+    ReverseMoveSpeed: 1.4
+    RotatingFootSpeed: 1.6
+    SprintSpeed: 4.5
+    ReverseSprintSpeed: 4
+    RotationSmoothTime: 0.12
+    RotationSpeed: 35
+    SpeedChangeRate: 10
+    TransformReference: {fileID: 1284542973745687367}
+    ControllerReference: {fileID: 1284542972771108735}
+  jumpData:
+    JumpHeight: 1.2
+    Gravity: -15
+    JumpTimeout: 0.5
+    FallTimeout: 0.15
+    Grounded: 1
+    GroundedOffset: -0.14
+    GroundedRadius: 0.28
+    GroundLayers:
+      serializedVersion: 2
+      m_Bits: 0
+    TransformReference: {fileID: 1284542973745687367}
+    ControllerReference: {fileID: 1284542972771108735}
+  animationManager:
+    SpeedAnimationId: Speed
+    GroundAnimationId: Grounded
+    JumpAnimationId: Jump
+    FreeFallAnimationId: FreeFall
+    MotionSpeedAnimationId: MotionSpeed
 --- !u!1 &1284542972818562678
 GameObject:
   m_ObjectHideFlags: 0
