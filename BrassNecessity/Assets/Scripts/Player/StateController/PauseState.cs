@@ -16,7 +16,7 @@ public class PauseState : MonoBehaviour, IControllerState
         return NextState;
     }
 
-    public void StateReset()
+    public void StateEnter()
     {
         _input.pause = false;
         NextState = this;

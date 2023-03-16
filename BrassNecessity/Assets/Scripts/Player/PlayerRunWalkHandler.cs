@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class PlayerRunWalkHandler : ICartesianMoveHandler
 {
-    private ControllerMoveData controllerMoveData;
+    protected ControllerMoveData controllerMoveData;
     private ControllerAnimationManager animationManager;
     private float speedOffset = 0.1f;
     private float _animationBlend;
-    private float _targetRotation = 0.0f;
-    private float _rotationVelocity;
-    private float _verticalVelocity;
-    private Vector2 moveDirection;
+    protected float _targetRotation = 0.0f;
+    protected float _rotationVelocity;
+    protected float _verticalVelocity;
+    protected Vector2 moveDirection;
     private bool hasAnimationManger = false;
 
     public bool Sprint { get; set; }
@@ -44,7 +44,7 @@ public class PlayerRunWalkHandler : ICartesianMoveHandler
         return newMovement;
     }
 
-    private float getTargetSpeed()
+    protected virtual float getTargetSpeed()
     {
         float targetSpeed;
         if (moveDirection == Vector2.zero)
@@ -62,7 +62,7 @@ public class PlayerRunWalkHandler : ICartesianMoveHandler
         return targetSpeed;
     }
 
-    private Vector3 generateMovement(float targetSpeed)
+    protected virtual Vector3 generateMovement(float targetSpeed)
     {
         float speed = determineMoveSpeed(targetSpeed);
         Vector3 targetDirection = determineTargetDirection();
@@ -71,7 +71,7 @@ public class PlayerRunWalkHandler : ICartesianMoveHandler
         return movement;
     }
 
-    private float determineMoveSpeed(float targetSpeed)
+    protected float determineMoveSpeed(float targetSpeed)
     {
         CharacterController controller = controllerMoveData.ControllerReference;
         // a reference to the players current horizontal velocity
@@ -98,7 +98,7 @@ public class PlayerRunWalkHandler : ICartesianMoveHandler
         return speed;
     }
 
-    private Vector3 determineTargetDirection()
+    protected virtual Vector3 determineTargetDirection()
     {
         // normalise input direction
         Vector3 inputDirection = new Vector3(moveDirection.x, 0.0f, moveDirection.y).normalized;
@@ -128,7 +128,7 @@ public class PlayerRunWalkHandler : ICartesianMoveHandler
         animationManager.TrySetAnimationMotionSpeed(inputMagnitude); //should be inputmagnitude
     }
 
-    private float recalculateAnimationBlend(float targetSpeed)
+    protected virtual float recalculateAnimationBlend(float targetSpeed)
     {
         _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * controllerMoveData.SpeedChangeRate);
         if (_animationBlend < 0.01f)
@@ -138,7 +138,7 @@ public class PlayerRunWalkHandler : ICartesianMoveHandler
         return _animationBlend;
     }
 
-    private float getInputMagnitude()
+    protected virtual float getInputMagnitude()
     {
         return IsMovementAnalog ? moveDirection.magnitude : 1f;
     }

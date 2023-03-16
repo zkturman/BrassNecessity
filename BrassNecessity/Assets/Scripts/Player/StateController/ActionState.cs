@@ -12,10 +12,13 @@ public class ActionState : MonoBehaviour, IControllerState
     private ControllerJumpFallData _jumpData;
     [SerializeField]
     private ControllerAnimationManager _animData;
+    private ElementApplyState applyState;
+
+    private ElementComponent nextElement;
 
     private PlayerControllerInputs _input;
     private CharacterController _controller;
-    private Player3DMover mover;
+    private InputAgnosticMover mover;
     public IControllerState NextState { get; private set; }
 
     private void Start()
@@ -23,7 +26,8 @@ public class ActionState : MonoBehaviour, IControllerState
         _animData.Animator = GetComponent<Animator>();
         _controller = GetComponent<CharacterController>();
         _input = GetComponent<PlayerControllerInputs>();
-        mover = new Player3DMover(_moveData, _jumpData);
+        applyState = GetComponent<ElementApplyState>();
+        mover = new InputAgnosticMover(_moveData, _jumpData);
         mover.AddAnimationManager(_animData);
         NextState = this;
     }
@@ -33,7 +37,7 @@ public class ActionState : MonoBehaviour, IControllerState
         return this;
     }
 
-    public void StateReset()
+    public void StateEnter()
     {
         NextState = this;
         _input.pause = false;
@@ -46,29 +50,35 @@ public class ActionState : MonoBehaviour, IControllerState
         {
             NextState = GetComponent<PauseState>();
         }
-        else if (_input.lightAttack)
+        else if (_input.shoot)
         {
-            _input.lightAttack = false;
-            AttackState attackState = GetComponent<AttackState>();
-            attackState.IsStrongAttack = false;
-            NextState = attackState;
+            NextState = GetComponent<AttackState>(); ;
         }
-        else if (_input.strongAttack)
+        else if (_input.applyElement)
         {
-            _input.strongAttack = false;
-            AttackState attackState = GetComponent<AttackState>();
-            attackState.IsStrongAttack = true;
-            NextState = attackState;
-        }
-        else if (_input.switchWeapon != 0)
-        {
-            WeaponSwitchState weaponSwitchState = GetComponent<WeaponSwitchState>();
-            weaponSwitchState.SwitchValue = _input.switchWeapon;
-            NextState = weaponSwitchState;
+            NextState = applyState;
         }
         else
         {
             mover.MovePlayer(_input);
+            detectCollision();
+        }
+    }
+
+    private void detectCollision()
+    {
+        RaycastHit collision;
+        Vector3 boxCenter = new Vector3(transform.position.x, transform.position.y + _controller.height / 2, transform.position.z);
+        Vector3 extents = new Vector3(_controller.radius / 2, _controller.height / 4, _controller.radius / 2);
+        if (Physics.BoxCast(boxCenter, extents, transform.forward, out collision, Quaternion.identity, .25f))
+        {
+            ElementPickup pickup;
+            if (collision.collider.TryGetComponent<ElementPickup>(out pickup))
+            {
+                ElementComponent element = collision.collider.GetComponent<ElementComponent>();
+                applyState.AddElement(element);
+                pickup.PickupItem();
+            }
         }
     }
 

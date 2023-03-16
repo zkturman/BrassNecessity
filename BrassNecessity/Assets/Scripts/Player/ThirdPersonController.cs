@@ -48,7 +48,7 @@ public class ThirdPersonController : MonoBehaviour
         if (currentState != currentState.NextState)
         {
             currentState = currentState.NextState;
-            currentState.StateReset();
+            currentState.StateEnter();
         }
     }
 }

@@ -10,11 +10,12 @@ public class PlayerControllerInputs : MonoBehaviour
 	public Vector2 look;
 	public bool jump;
 	public bool sprint;
-	public bool lightAttack;
-	public bool strongAttack;
+	public bool shoot;
+	public bool strafe;
 	public bool applyElement;
-	public int switchWeapon;
 	public bool pause;
+	private PlayerInput playerInput;
+	private string lastControlScheme;
 
 	[Header("Movement Settings")]
 	public bool analogMovement;
@@ -47,20 +48,14 @@ public class PlayerControllerInputs : MonoBehaviour
 		SprintInput(value.isPressed);
 	}
 
-	public void OnLightAttack(InputValue value)
+	public void OnShoot(InputValue value)
 	{
-		LightAttackInput(value.isPressed);
+		ShootInput(value.isPressed);
 	}
 
-	public void OnStrongAttack(InputValue value)
+	public void OnStrafe(InputValue value)
     {
-		StrongAttackInput(value.isPressed);
-    }
-
-	public void OnSwitchWeapon(InputValue value)
-    {
-		float input = value.Get<float>();
-		SwitchWeaponInput((int)input);
+		StrafeInput(value.isPressed);
     }
 
 	public void OnApplyElement(InputValue value)
@@ -76,8 +71,13 @@ public class PlayerControllerInputs : MonoBehaviour
 
 #endif
 
-
-	public void MoveInput(Vector2 newMoveDirection)
+    private void Awake()
+    {
+		playerInput = GetComponent<PlayerInput>();
+		lastControlScheme = playerInput.currentControlScheme;
+		CurrentDevice.DeviceScheme = lastControlScheme;
+    }
+    public void MoveInput(Vector2 newMoveDirection)
 	{
 		move = newMoveDirection;
 	} 
@@ -97,19 +97,14 @@ public class PlayerControllerInputs : MonoBehaviour
 		sprint = newSprintState;
 	}
 
-	public void LightAttackInput(bool newAttackState)
+	public void ShootInput(bool newShootState)
     {
-		lightAttack = newAttackState;
+		shoot = newShootState;
     }
 
-	public void StrongAttackInput(bool newAttackState)
+    public void StrafeInput(bool newStrafeState)
     {
-		strongAttack = newAttackState;
-    }
-
-	public void SwitchWeaponInput(int newSwitchValue)
-    {
-		switchWeapon = newSwitchValue;
+		strafe = newStrafeState;
     }
 
 	public void ApplyElementInput(bool newApplyState)
@@ -131,4 +126,13 @@ public class PlayerControllerInputs : MonoBehaviour
 	{
 		Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
 	}
+
+    private void Update()
+    {
+		if (lastControlScheme != playerInput.currentControlScheme)
+        {
+			CurrentDevice.DeviceScheme = playerInput.currentControlScheme;
+			lastControlScheme = playerInput.currentControlScheme;
+        }
+    }
 }

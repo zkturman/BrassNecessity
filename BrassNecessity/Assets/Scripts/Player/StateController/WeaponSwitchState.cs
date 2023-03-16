@@ -20,7 +20,7 @@ public class WeaponSwitchState : MonoBehaviour, IControllerState
         return NextState;
     }
 
-    public void StateReset()
+    public void StateEnter()
     {
         NextState = this;
         timeoutHandler.ResetTimeout();
