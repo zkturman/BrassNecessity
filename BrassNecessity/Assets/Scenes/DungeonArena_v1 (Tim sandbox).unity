@@ -71646,8 +71646,9 @@ MonoBehaviour:
   target: {fileID: 0}
   enemyElement: {fileID: 0}
   spawnManager: {fileID: 0}
-  farAttackDistance: 2
   closeAttackDistance: 1
+  farAttackDistance: 2
+  hangBackDistance: 2
 --- !u!114 &1744015523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87650,8 +87651,9 @@ MonoBehaviour:
   target: {fileID: 0}
   enemyElement: {fileID: 0}
   spawnManager: {fileID: 0}
-  farAttackDistance: 2
   closeAttackDistance: 1
+  farAttackDistance: 2
+  hangBackDistance: 2
 --- !u!114 &3855682205891863903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89590,7 +89592,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5263120438749642116}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -54.45124, y: -4.9051323, z: 1.2986145}
+  m_LocalPosition: {x: -55.45, y: -5, z: 1.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -90768,7 +90770,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
 --- !u!1 &5263121375719451768
 GameObject:

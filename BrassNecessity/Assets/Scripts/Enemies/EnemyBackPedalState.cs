@@ -14,7 +14,15 @@ public class EnemyBackPedalState : EnemyBaseState
         context.navAgent.updateRotation = false;
 
         // Set backpedal position to retreat to
+        Vector3 directionFromPlayerToEnemy = (context.transform.position - context.target.transform.position);
+        directionFromPlayerToEnemy.Normalize();
+        //Vector3 backPedalTargetPosition = context.target.transform.position + directionFromPlayerToEnemy * (context.farAttackDistance + context.hangBackDistance);
+        Vector3 backPedalTargetPosition = new Vector3(-53f, -5f, 0f);
+        Debug.Log("Backpedal target location: " + backPedalTargetPosition.ToString());
+        
 
+        context.navAgent.SetDestination(backPedalTargetPosition);
+        context.navAgent.isStopped = false;
 
 
     }

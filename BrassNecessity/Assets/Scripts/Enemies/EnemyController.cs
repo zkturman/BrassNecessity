@@ -14,19 +14,16 @@ public class EnemyController : MonoBehaviour
     [HideInInspector] public Transform target;
     [HideInInspector] public ElementComponent enemyElement;
     public EnemySpawnManager spawnManager;
-    public float farAttackDistance = 2f;   // The furthest distance from the player that the enemy will attack
-    public float closeAttackDistance = 1f;
-
+    public float closeAttackDistance = 1f;   // Closest enemy can get to the player and still have room to attack
+    public float farAttackDistance = 2f;   // The furthest distance from the player that the enemy can attack and still connect
+    public float hangBackDistance = 2f;    // Distance beyond the farAttackDistance to hang back if the player is already under attack
 
     // -----------------------------------------------------------
-    // *** Not needed now we're not using CharacterController comnponent...??
+    // *** Not needed now we're not using CharacterController component...??
     //public float moveSpeed = 1f;    // Units per second
     //public float turnSpeed = 90f;   // Degrees per second
     //public float rotationFactorPerFrame;   // *** TESTING - may replace the turnSpeed variable above ***
     // -----------------------------------------------------------
-
-
-
 
     // State machine properties
     EnemyBaseState currentState;
@@ -34,7 +31,9 @@ public class EnemyController : MonoBehaviour
     public EnemyMoveState MoveState = new EnemyMoveState();
     public EnemyAttackState AttackState = new EnemyAttackState();
     public EnemyBackPedalState BackPedalState = new EnemyBackPedalState();
+    public EnemyGotHitState GotHitState = new EnemyGotHitState();
     public EnemyDieState DieState = new EnemyDieState();
+
 
 
     private void Awake()
@@ -85,9 +84,9 @@ public class EnemyController : MonoBehaviour
 
     public enum PlayerDistance
     {
+        TooClose,
         Far,
         AttackRange,
-        TooClose
     }
 
 
