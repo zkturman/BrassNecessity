@@ -61,24 +61,6 @@ public class ActionState : MonoBehaviour, IControllerState
         else
         {
             mover.MovePlayer(_input);
-            detectCollision();
-        }
-    }
-
-    private void detectCollision()
-    {
-        RaycastHit collision;
-        Vector3 boxCenter = new Vector3(transform.position.x, transform.position.y + _controller.height / 2, transform.position.z);
-        Vector3 extents = new Vector3(_controller.radius / 2, _controller.height / 4, _controller.radius / 2);
-        if (Physics.BoxCast(boxCenter, extents, transform.forward, out collision, Quaternion.identity, .25f))
-        {
-            ElementPickup pickup;
-            if (collision.collider.TryGetComponent<ElementPickup>(out pickup))
-            {
-                ElementComponent element = collision.collider.GetComponent<ElementComponent>();
-                applyState.AddElement(element);
-                pickup.PickupItem();
-            }
         }
     }
 
