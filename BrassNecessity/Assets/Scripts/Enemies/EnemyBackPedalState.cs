@@ -7,48 +7,74 @@ public class EnemyBackPedalState : EnemyBaseState
 {
     public override void EnterState(EnemyController context)
     {
-        context.animator.SetBool("PlayerTooClose", true);
-        context.animator.SetBool("PlayerInHitDistance", true);
+        Debug.Log("Entering Backpedal state");
 
-        // Turn off NavMeshAgent rotation to keep the enemy facing the player while it backpedals
-        context.navAgent.updateRotation = false;
+        // Set NavMeshAgent and Animator settings for backpedal
+        context.navAgent.updateRotation = false;   // Enemy keeps facing the enemy while backing away
+        //context.navAgent.isStopped = false;
+        context.animator.SetBool("BackPedal", true);
 
-        // Set backpedal position to retreat to
-        Vector3 directionFromPlayerToEnemy = (context.transform.position - context.target.transform.position);
-        directionFromPlayerToEnemy.Normalize();
-        //Vector3 backPedalTargetPosition = context.target.transform.position + directionFromPlayerToEnemy * (context.farAttackDistance + context.hangBackDistance);
-        Vector3 backPedalTargetPosition = new Vector3(-53f, -5f, 0f);
-        Debug.Log("Backpedal target location: " + backPedalTargetPosition.ToString());
-        
-
-        context.navAgent.SetDestination(backPedalTargetPosition);
-        context.navAgent.isStopped = false;
-
+        // Calculate destination
+        SetBackPedalDestination(context);
 
     }
 
     public override void UpdateState(EnemyController context)
     {
-        // Check the latest distance from the player
-        EnemyController.PlayerDistance playerDist = context.CheckPlayerDistance();
-
-        if (playerDist == EnemyController.PlayerDistance.AttackRange)
+        // Keep facing player as the enemy backs away
+        if (!context.EnemyIsFacingPlayer())
         {
-            context.navAgent.updateRotation = true;   // revert to allowing the NavMeshAgent to change rotation
-            context.SwitchState(context.AttackState);
-            return;
-        }
-        else if (playerDist == EnemyController.PlayerDistance.Far)
-        {
-            context.navAgent.updateRotation = true;   // revert to allowing the NavMeshAgent to change rotation
-            context.SwitchState(context.MoveState);
-            return;
+            context.TurnTowardsPlayer();
         }
 
-        // Keep backpedalling
+        // Check to see if enemy is ready to return to Idle
+        bool returnToIdle = false;
+        float distance = context.DistanceToPlayer();
+        if (distance > context.closeAttackDistance && context.attackersTracker.IsOpenToAttack) returnToIdle = true;
+        if (context.navAgent.remainingDistance < context.navAgent.stoppingDistance) returnToIdle = true;
 
+        if (returnToIdle)
+        {
+            ReturnToIdle(context);
+        }
 
     }
+
+
+    private void SetBackPedalDestination(EnemyController context)
+    {
+        // Set destination to HangBackDistance...
+        if (!context.navAgent.SetDestination(context.PositionToMoveTo(context.hangBackDistance)))
+        {
+            // If it returns an invalid destination then try again with the CloseAttackDistance...
+            if (!context.navAgent.SetDestination(context.PositionToMoveTo(context.closeAttackDistance)))
+            {
+                // And if that also returns an invalid location just revert to idle...
+                // *** THIS CODE CAN BE IMPROVED IN FUTUR ***
+                ReturnToIdle(context);
+            }
+        }
+
+        
+
+    }
+
+
+    void ReturnToIdle(EnemyController context)
+    {
+        UpdateSettingsOnExitState(context);
+        context.SwitchState(context.IdleState);
+    }
+
+
+    void UpdateSettingsOnExitState(EnemyController context)
+    {
+        context.navAgent.updateRotation = true;
+        //context.navAgent.isStopped = true;
+        context.animator.SetBool("BackPedal", false);
+    }
+
+
 
 
     public override void CollisonEntered(EnemyController context, Collision collision)

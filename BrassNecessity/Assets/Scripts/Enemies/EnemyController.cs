@@ -11,19 +11,19 @@ public class EnemyController : MonoBehaviour
     // Enemy properties (public so the state classes can access them)
     [HideInInspector] public Animator animator;
     [HideInInspector] public NavMeshAgent navAgent;
-    [HideInInspector] public Transform target;
+    [HideInInspector] public Transform playerTransform;
     [HideInInspector] public ElementComponent enemyElement;
-    public EnemySpawnManager spawnManager;
-    public float closeAttackDistance = 1f;   // Closest enemy can get to the player and still have room to attack
-    public float farAttackDistance = 2f;   // The furthest distance from the player that the enemy can attack and still connect
-    public float hangBackDistance = 2f;    // Distance beyond the farAttackDistance to hang back if the player is already under attack
+    [HideInInspector] public EnemySpawnManager spawnManager;
+    [HideInInspector] public EnemyWeapon enemyWeapon;
+    [HideInInspector] public EnemyAttackersTracker attackersTracker;
 
-    // -----------------------------------------------------------
-    // *** Not needed now we're not using CharacterController component...??
-    //public float moveSpeed = 1f;    // Units per second
-    //public float turnSpeed = 90f;   // Degrees per second
-    //public float rotationFactorPerFrame;   // *** TESTING - may replace the turnSpeed variable above ***
-    // -----------------------------------------------------------
+
+    public float closeAttackDistance = 2f;
+    public float farAttackDistance = 4f;
+    public float hangBackDistance = 7f;
+    public float enemyTurnSpeed = 5f;
+    public float facingPlayerDegreesMargin = 10f;   // The plus/minus margin of error (in degrees) that the enemy can be facing to the left or right of the player but still be close enough to be considered 'facing the player'
+    
 
     // State machine properties
     EnemyBaseState currentState;
@@ -40,12 +40,27 @@ public class EnemyController : MonoBehaviour
     {
         // NavMeshAgent
         navAgent = GetComponent<NavMeshAgent>();
-        target = GameObject.FindGameObjectWithTag("Player").transform;
-        navAgent.isStopped = true;
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        navAgent.isStopped = false;
 
         animator = GetComponent<Animator>();
         enemyElement = GetComponent<ElementComponent>();
-        
+        enemyWeapon = GetComponentInChildren<EnemyWeapon>();
+
+        // Check if attackersTracker has been assigned
+        if (attackersTracker == null)
+        {
+            // If not, first check if the player has one, and add one if not.
+            if (playerTransform.gameObject.GetComponent<EnemyAttackersTracker>() == null)
+            {
+                playerTransform.gameObject.AddComponent<EnemyAttackersTracker>();
+            }
+
+            // Then assign the player's EnemyAttackersTracker to the property
+            attackersTracker = playerTransform.gameObject.GetComponent<EnemyAttackersTracker>();
+        }
+
+
         SwitchState(IdleState);
     }
 
@@ -82,33 +97,60 @@ public class EnemyController : MonoBehaviour
     }
 
 
-    public enum PlayerDistance
+    public float DistanceToPlayer()
     {
-        TooClose,
-        Far,
-        AttackRange,
+        float distance = (playerTransform.position - this.transform.position).magnitude;
+        //Debug.Log("Distance to player: " + distance.ToString());
+        return distance;
     }
 
 
-    public PlayerDistance CheckPlayerDistance()
+    public Vector3 FlatDirectionToPlayer()
     {
-        // Test if the player is still in range
-        Vector3 playerVector = target.position - transform.position;
-        float playerDistance = playerVector.magnitude;
+        // Returns the direction of the player on a flat plane i.e. with no up/down element
+        Vector3 directionToPlayer = playerTransform.position - transform.position;
+        Vector3 flatDirectionToPlayer = new Vector3(directionToPlayer.x, 0f, directionToPlayer.z);
+        return flatDirectionToPlayer;
 
-        PlayerDistance result;
-        if (playerDistance > farAttackDistance)
-        {
-            result = PlayerDistance.Far;
-        } else if (playerDistance <= farAttackDistance && playerDistance >= closeAttackDistance)
-        {
-            result = PlayerDistance.AttackRange;
-        } else
-        {
-            result = PlayerDistance.TooClose;
-        }
+    }
 
-        return result;
+    public Vector3 FlatEnemyFacingDirection()
+    {
+        Vector3 flatDirection = new Vector3(transform.forward.x, 0f, transform.forward.z);
+        return flatDirection;
+    }
+
+
+    public bool EnemyIsFacingPlayer()
+    {
+
+        float angle = Vector3.Angle(FlatDirectionToPlayer(), FlatEnemyFacingDirection());
+        bool isFacing = angle < facingPlayerDegreesMargin;
+        
+        //if (isFacing) {
+        //    Debug.Log("Enemy is facing player");
+        //} else
+        //{
+        //    Debug.Log("Enemy is --NOT-- facing player");
+        //}
+
+        return isFacing;
+    }
+
+
+    public void TurnTowardsPlayer()
+    {
+        Quaternion rotationToPlayer = Quaternion.LookRotation(FlatDirectionToPlayer());
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, rotationToPlayer, enemyTurnSpeed * Time.deltaTime);
+        
+    }
+
+
+    public Vector3 PositionToMoveTo(float distanceFromPlayer)
+    {
+        Vector3 playerToEnemyDirection = (transform.position - playerTransform.position).normalized;
+        Vector3 targetPosition = playerTransform.position + (playerToEnemyDirection * distanceFromPlayer);
+        return targetPosition;
     }
 
 

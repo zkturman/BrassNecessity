@@ -1,13 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
 public class EnemyAttackState : EnemyBaseState
 {
+    bool firstAttack = true;   // Use this to flip between the two different attacks
+
     public override void EnterState(EnemyController context)
     {
-        context.animator.SetBool("PlayerTooClose", false);
-        context.animator.SetBool("PlayerInHitDistance", true);
+        Debug.Log("Entering Attack state");
+        context.attackersTracker.numOfAttackers++;
+
+
+        // Choose which attack to use this time        
+        if (firstAttack)
+        {
+            context.animator.SetTrigger("StartAttack01");
+            firstAttack = false;
+        } else
+        {
+            context.animator.SetTrigger("StartAttack02");
+            firstAttack = true;
+        }
+
+        context.enemyWeapon.ActivateWeapon();
+       
     }
 
 
@@ -25,36 +43,21 @@ public class EnemyAttackState : EnemyBaseState
 
     public override void AnimationClipFinished(EnemyController context, string animName)
     {
-        Debug.Log("Attack animation finished");
-        
-        // Do nothing if it's not an 'attack' animation that has finished
-        if (animName != "Attack")
+        if (animName == "Attack")
         {
-            return;
+            // Attack animation has completed.
+            UpdateSettingsOnExit(context);
+            context.SwitchState(context.IdleState);
         }
-
-        // In case the player has moved position, update enemy rotation to face player
-        // (Ideally this would happen smoothly, but for now it is instantaneous to see if it is noticeable to the player)
-        //context.gameObject.transform.rotation.SetLookRotation(context.gameObject.transform.position - context.target.position);
-        
-
-        // Test if the player is still in range
-        EnemyController.PlayerDistance playerDist = context.CheckPlayerDistance();
-
-        if (playerDist == EnemyController.PlayerDistance.Far)
-        {
-            context.SwitchState(context.MoveState);
-            return;
-        } else if (playerDist == EnemyController.PlayerDistance.TooClose)
-        {
-            // The player is too close now, so back off
-            context.SwitchState(context.BackPedalState);
-
-        }
-
-
-
-        // *** What if the player has moved slightly (or the enemy has been jostled) - update direction so next attack is still aimed at the player.
-
     }
+
+
+    void UpdateSettingsOnExit(EnemyController context)
+    {
+        context.enemyWeapon.DeactivateWeapon();
+        context.attackersTracker.numOfAttackers--;
+    }
+
+
+
 }

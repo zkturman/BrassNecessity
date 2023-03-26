@@ -1,38 +1,54 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyMoveState : EnemyBaseState
 {
-   
 
     public override void EnterState(EnemyController context)
     {
-        context.navAgent.isStopped = false;
-        context.navAgent.SetDestination(context.target.position);
-        context.animator.SetBool("PlayerInHitDistance", false);
-        context.animator.SetBool("PlayerTooClose", false);
-        context.animator.SetBool("CanSeePlayer", true);
+        Debug.Log("Entering Move State");
+        
+        // Update settings on enter
+        //context.navAgent.isStopped = false;
+        context.animator.SetBool("WalkForwards", true);
+
+
+        // Set destination
+        float distance = context.DistanceToPlayer();
+        if (distance <= context.hangBackDistance)
+        {
+            // If the enemy is already closer than the HangBackDistance then assume moving to attack distance
+            float avgAttackDistance = context.closeAttackDistance + ((context.farAttackDistance - context.closeAttackDistance) / 2);
+            context.navAgent.SetDestination(context.PositionToMoveTo(avgAttackDistance));
+        } else
+        {
+            // Assume moving forwards to hangback location
+            context.navAgent.SetDestination(context.PositionToMoveTo(context.hangBackDistance - 0.5f));   // Minus 0.5f to make sure enemy finished inside the hangback range.
+        }
+
     }
 
 
     public override void UpdateState(EnemyController context)
     {
-        // Test if the player is in attack range
-        EnemyController.PlayerDistance playerDist = context.CheckPlayerDistance();
+        // Check if it is time to return to idle state
+        bool returnToIdle = false;
 
-        if (playerDist == EnemyController.PlayerDistance.AttackRange)
+        //Debugging
+        Debug.Log(string.Format("MoveState: NavAgent.remainingDistance = {0}; distanceToPlayer = {1}", context.navAgent.remainingDistance.ToString(), context.DistanceToPlayer().ToString()));
+
+
+        if (context.navAgent.remainingDistance < 0.01f) returnToIdle = true;
+        if (context.navAgent.pathStatus == NavMeshPathStatus.PathInvalid) returnToIdle = true;
+
+
+        if (returnToIdle)
         {
-            // Switch to the attack state
-            context.SwitchState(context.AttackState);
-        } else if (playerDist == EnemyController.PlayerDistance.TooClose)
-        {
-            // If the enemy has already got too close
-            context.SwitchState(context.BackPedalState);
-        } else
-        {
-            // Update NavMeshAgent to move to player's latest position
-            context.navAgent.SetDestination(context.target.position);
+            Debug.Log("MoveState is returning to Idle");
+            ReturnToIdleState(context);
         }
     }
 
@@ -44,6 +60,20 @@ public class EnemyMoveState : EnemyBaseState
 
     public override void AnimationClipFinished(EnemyController context, string animName)
     {
-        // Not needed as the walking animation simply loops
+        
+    }
+
+
+    void ReturnToIdleState(EnemyController context)
+    {
+        UpdateSettingsOnExit(context);
+        context.SwitchState(context.IdleState);
+    }
+
+
+    void UpdateSettingsOnExit(EnemyController context)
+    {
+        context.animator.SetBool("WalkForwards", false);
+        //context.navAgent.isStopped = true;
     }
 }
