@@ -32,6 +32,7 @@ public class EnemyBackPedalState : EnemyBaseState
         float distance = context.DistanceToPlayer();
         if (distance > context.closeAttackDistance && context.attackersTracker.IsOpenToAttack) returnToIdle = true;
         if (context.navAgent.remainingDistance < context.navAgent.stoppingDistance) returnToIdle = true;
+        if (context.navAgent.pathStatus == NavMeshPathStatus.PathPartial) returnToIdle = true;
 
         if (returnToIdle)
         {

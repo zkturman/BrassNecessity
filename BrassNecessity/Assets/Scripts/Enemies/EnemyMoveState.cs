@@ -38,12 +38,13 @@ public class EnemyMoveState : EnemyBaseState
         bool returnToIdle = false;
 
         //Debugging
-        Debug.Log(string.Format("MoveState: NavAgent.remainingDistance = {0}; distanceToPlayer = {1}", context.navAgent.remainingDistance.ToString(), context.DistanceToPlayer().ToString()));
+        //Debug.Log(string.Format("MoveState: NavAgent.remainingDistance = {0}; distanceToPlayer = {1}", context.navAgent.remainingDistance.ToString(), context.DistanceToPlayer().ToString()));
 
 
+        
         if (context.navAgent.remainingDistance < 0.01f) returnToIdle = true;
         if (context.navAgent.pathStatus == NavMeshPathStatus.PathInvalid) returnToIdle = true;
-
+        if (context.navAgent.pathStatus == NavMeshPathStatus.PathPartial) returnToIdle = true;
 
         if (returnToIdle)
         {

@@ -2508,6 +2508,7 @@ GameObject:
   - component: {fileID: 1812641744891033672}
   - component: {fileID: 1812641744891033673}
   - component: {fileID: 5777432463612613999}
+  - component: {fileID: 166029154}
   m_Layer: 0
   m_Name: SyntyDungeonGoblinChief
   m_TagString: Untagged
@@ -2587,7 +2588,7 @@ MonoBehaviour:
   enemyWeapon: {fileID: 0}
   attackersTracker: {fileID: 0}
   closeAttackDistance: 1.5
-  farAttackDistance: 2
+  farAttackDistance: 2.5
   hangBackDistance: 8
   enemyTurnSpeed: 90
   facingPlayerDegreesMargin: 5
@@ -2627,6 +2628,20 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
+--- !u!136 &166029154
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5777432463612613998}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.59
+  m_Height: 1.9
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.99, z: 0}
 --- !u!1 &5777433402461406354
 GameObject:
   m_ObjectHideFlags: 0
