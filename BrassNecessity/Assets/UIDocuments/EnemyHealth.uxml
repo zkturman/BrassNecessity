@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/styles.uss?fileID=7433441132597879392&amp;guid=c30f6580d0acd8e429a717e8d1833395&amp;type=3#styles" />
+    <ui:VisualElement style="align-items: center; justify-content: center;">
+        <ui:Label text="&lt;500.00&gt;" display-tooltip-when-elided="true" class="healthText" style="font-size: 24px;" />
+    </ui:VisualElement>
+</ui:UXML>

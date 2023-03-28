@@ -1,0 +1,8 @@
+.healthText {
+    font-size: 36px;
+    -unity-font: url('project://database/Library/unity%20default%20resources?fileID=10102&guid=0000000000000000e000000000000000&type=0#Arial');
+    -unity-font-style: bold;
+    color: rgba(255, 255, 255, 255);
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.79);
+}
