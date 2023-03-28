@@ -6,19 +6,24 @@ public class EnemyHealthHandler : MonoBehaviour
 {
     [SerializeField]
     protected float baseHealth = 80f;
-    protected float health;
+    public float Health { get; protected set; }
     public bool IsDead { get; protected set; }
 
     protected void Awake()
     {
         IsDead = false;
-        health = baseHealth;
+        Health = baseHealth;
+    }
+
+    public float GetBaseHealth()
+    {
+        return baseHealth;
     }
 
     public virtual void DamageEnemy(float damageAmount)
     {
-        baseHealth -= damageAmount;
-        if (baseHealth < 0)
+        Health -= damageAmount;
+        if (Health < 0)
         {
             IsDead = true;
         }

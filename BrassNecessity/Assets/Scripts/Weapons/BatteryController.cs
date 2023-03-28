@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ElementComponent))]
 [ExecuteAlways]
 public class BatteryController : MonoBehaviour
 {
@@ -28,7 +29,6 @@ public class BatteryController : MonoBehaviour
         else
         {
             findElementData();
-            elementInfo = data.TryGetElementPair();
             elementInfo.UpdateElement();
             batteryTanks = GetComponentsInChildren<BatteryPiece>();
             batteryLights = GetComponentsInChildren<Light>();

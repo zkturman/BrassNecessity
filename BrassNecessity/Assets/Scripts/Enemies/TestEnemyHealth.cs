@@ -9,7 +9,12 @@ public class TestEnemyHealth : EnemyHealthHandler
     public override void DamageEnemy(float damageAmount)
     {
         base.DamageEnemy(damageAmount);
-        StartCoroutine(hideEnemy());
+        if (Health < 0f)
+        {
+            Health = 0f;
+            IsDead = true;
+            StartCoroutine(hideEnemy());
+        }
     }
 
     private IEnumerator hideEnemy()
@@ -18,10 +23,24 @@ public class TestEnemyHealth : EnemyHealthHandler
         Collider collider = GetComponent<Collider>();
         mesh.enabled = false;
         collider.enabled = false;
+        setActiveOnAllChildren(false);
         yield return new WaitForSeconds(respawnTimeInSeconds);
         mesh.enabled = true;
         collider.enabled = true;
-        health = baseHealth;
+        Health = baseHealth;
         IsDead = false;
+        setActiveOnAllChildren(true);
+    }
+
+    private void setActiveOnAllChildren(bool isActive)
+    {
+        Transform[] children = GetComponentsInChildren<Transform>(true);
+        for (int i = 0; i < children.Length; i++)
+        {
+            if (children[i] != transform)
+            {
+                children[i].gameObject.SetActive(isActive);
+            }
+        }
     }
 }

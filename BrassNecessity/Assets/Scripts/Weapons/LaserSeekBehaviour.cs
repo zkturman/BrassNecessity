@@ -16,9 +16,22 @@ public class LaserSeekBehaviour : MonoBehaviour
     [SerializeField]
     private LayerMask ignoreLayers;
 
+    [SerializeField]
+    private float baseDamagePerSecond = 15f;
+
+    [SerializeField]
+    private ElementComponent weaponElement;
+
+    [SerializeField]
+    private ImpactBehaviour impactEffect;
+
     private void Start()
     {
         ignoreLayers = ~ignoreLayers;
+        if (weaponElement == null)
+        {
+            weaponElement = GetComponentInParent<ElementComponent>();
+        }
     }
 
     public void SeekTarget()
@@ -35,9 +48,27 @@ public class LaserSeekBehaviour : MonoBehaviour
             laserSplash.transform.localPosition = new Vector3(0, targetDistance, 0);
             Vector3 newEndPos = new Vector3(0, targetDistance, 0);
             laserBeam.EndPos = newEndPos;
-            MeshRenderer test = GetComponent<MeshRenderer>();
+            handleEnemyCollision(target);
         }
         laserBeam.UpdateLineScale();
+    }
+
+    private void handleEnemyCollision(RaycastHit target)
+    {
+        EnemyHealthHandler enemyHealth;
+        if (target.collider.TryGetComponent(out enemyHealth))
+        {
+            ElementPair enemyElement = target.collider.GetComponent<ElementComponent>().ElementInfo;
+            ElementPair laserElement = weaponElement.ElementInfo;
+            float multiplier = ElementMultiplierGrid.GetAttackMultiplier(laserElement.Primary, enemyElement.Primary);
+            impactEffect.SetImpactEffects(multiplier);
+            float damage = baseDamagePerSecond * multiplier * Time.deltaTime;
+            enemyHealth.DamageEnemy(damage);
+        }
+        else
+        {
+            impactEffect.ResetEffects();
+        }
     }
 
     public void FinishSeeking()

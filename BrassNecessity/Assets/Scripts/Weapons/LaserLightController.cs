@@ -5,7 +5,7 @@ using UnityEngine;
 public class LaserLightController : MonoBehaviour
 {
     [SerializeField]
-    private ElementComponent elementInfo;
+    private ElementComponent elementComponent;
     private Element.Type lastType;
 
     [SerializeField]
@@ -18,18 +18,28 @@ public class LaserLightController : MonoBehaviour
     private GameObject laserSplash;
 
     [SerializeField]
-    private ParticleSystem laserBaseEffect;
+    private ImpactBehaviour laserBaseEffect;
+
+    private void Start()
+    {
+        setColors(elementComponent.ElementInfo);
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if (lastType != elementInfo.ElementInfo.Primary)
+        if (lastType != elementComponent.ElementInfo.Primary)
         {
-            laser.LineColor = data.GetLight(elementInfo.ElementInfo);
-            laserSplash.GetComponent<MeshRenderer>().material = data.GetBatteryMaterial(elementInfo.ElementInfo);
-            var baseEffectMain = laserBaseEffect.main;
-            baseEffectMain.startColor = data.GetLight(elementInfo.ElementInfo);
-            lastType = elementInfo.ElementInfo.Primary;
+            setColors(elementComponent.ElementInfo);
         }        
+    }
+
+    private void setColors(ElementPair element)
+    {
+        Color elementColor = data.GetLight(element);
+        laser.LineColor = elementColor;
+        laserSplash.GetComponent<MeshRenderer>().material = data.GetBatteryMaterial(element);
+        laserBaseEffect.SetColor(elementColor);
+        lastType = element.Primary;
     }
 }
