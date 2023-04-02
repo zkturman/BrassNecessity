@@ -25,6 +25,8 @@ public class LaserSeekBehaviour : MonoBehaviour
     [SerializeField]
     private ImpactBehaviour impactEffect;
 
+    private EnemyHealthHandler hitEnemy;
+
     private void Start()
     {
         ignoreLayers = ~ignoreLayers;
@@ -55,15 +57,14 @@ public class LaserSeekBehaviour : MonoBehaviour
 
     private void handleEnemyCollision(RaycastHit target)
     {
-        EnemyHealthHandler enemyHealth;
-        if (target.collider.TryGetComponent(out enemyHealth))
+        if (target.collider.TryGetComponent(out hitEnemy))
         {
             ElementPair enemyElement = target.collider.GetComponent<ElementComponent>().ElementInfo;
             ElementPair laserElement = weaponElement.ElementInfo;
             float multiplier = ElementMultiplierGrid.GetAttackMultiplier(laserElement.Primary, enemyElement.Primary);
             impactEffect.SetImpactEffects(multiplier);
             float damage = baseDamagePerSecond * multiplier * Time.deltaTime;
-            enemyHealth.DamageEnemy(damage);
+            hitEnemy.DamageEnemy(damage);
         }
         else
         {
@@ -80,7 +81,8 @@ public class LaserSeekBehaviour : MonoBehaviour
         laserRender.enabled = false;
         gameObject.SetActive(false);
         laserBeam.StartPos = oldStart;
-
+        hitEnemy.StopDamagingEnemy();
+        hitEnemy = null;
     }
 
     private void OnDrawGizmosSelected()
