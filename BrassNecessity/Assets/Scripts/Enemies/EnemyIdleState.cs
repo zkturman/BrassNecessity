@@ -13,7 +13,7 @@ public class EnemyIdleState : EnemyBaseState
 
     public override void UpdateState(EnemyController context)
     {       
-        // Check distance to Player
+        // Check distance to the player
         float distance = context.DistanceToPlayer();
         Debug.Log("Distance to player: " + distance.ToString());
 
