@@ -2586,9 +2586,9 @@ MonoBehaviour:
   enemyElement: {fileID: 0}
   spawnManager: {fileID: 0}
   enemyWeapon: {fileID: 0}
-  attackersTracker: {fileID: 0}
   closeAttackDistance: 1.5
   farAttackDistance: 2.5
+  midAttackDistance: 0
   hangBackDistance: 8
   enemyTurnSpeed: 90
   facingPlayerDegreesMargin: 5
@@ -2615,7 +2615,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 5777432463612613998}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.26
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -2637,7 +2637,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 5777432463612613998}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.59
   m_Height: 1.9
   m_Direction: 1

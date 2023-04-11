@@ -10,8 +10,6 @@ public class EnemyAttackState : EnemyBaseState
     public override void EnterState(EnemyController context)
     {
         Debug.Log("Entering Attack state");
-        context.attackersTracker.numOfAttackers++;
-
 
         // Choose which attack to use this time        
         if (firstAttack)
@@ -24,20 +22,12 @@ public class EnemyAttackState : EnemyBaseState
             firstAttack = true;
         }
 
-        context.enemyWeapon.ActivateWeapon();
+        // // Original method: activate trigger collider on EnemyWeapon component.
+        //context.enemyWeapon.ActivateWeapon();
+
+        // New method: create one-time overlap sphere at start of attack
+        
        
-    }
-
-
-    public override void UpdateState(EnemyController context)
-    {
-
-    }
-
-
-    public override void CollisonEntered(EnemyController context, Collision collision)
-    {
-
     }
 
 
@@ -55,9 +45,20 @@ public class EnemyAttackState : EnemyBaseState
     void UpdateSettingsOnExit(EnemyController context)
     {
         context.enemyWeapon.DeactivateWeapon();
-        context.attackersTracker.numOfAttackers--;
+        
     }
 
+
+    public override void UpdateState(EnemyController context)
+    {
+
+    }
+
+
+    public override void CollisonEntered(EnemyController context, Collision collision)
+    {
+
+    }
 
 
 }

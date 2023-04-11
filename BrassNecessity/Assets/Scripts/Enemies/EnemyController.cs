@@ -15,25 +15,21 @@ public class EnemyController : MonoBehaviour
     [HideInInspector] public ElementComponent enemyElement;
     [HideInInspector] public EnemySpawnManager spawnManager;
     [HideInInspector] public EnemyWeapon enemyWeapon;
-    [HideInInspector] public EnemyAttackersTracker attackersTracker;
-
 
     public float closeAttackDistance = 2f;
     public float farAttackDistance = 4f;
+    [HideInInspector] public float midAttackDistance;
     public float hangBackDistance = 7f;
     public float enemyTurnSpeed = 5f;
     public float facingPlayerDegreesMargin = 10f;   // The plus/minus margin of error (in degrees) that the enemy can be facing to the left or right of the player but still be close enough to be considered 'facing the player'
     
-
     // State machine properties
     EnemyBaseState currentState;
     public EnemyIdleState IdleState = new EnemyIdleState();    // These 'potential' states need to be public so that the concrete State classes can refer to them when telling the Controller which state to switch to
     public EnemyMoveState MoveState = new EnemyMoveState();
     public EnemyAttackState AttackState = new EnemyAttackState();
-    public EnemyBackPedalState BackPedalState = new EnemyBackPedalState();
     public EnemyGotHitState GotHitState = new EnemyGotHitState();
     public EnemyDieState DieState = new EnemyDieState();
-
 
 
     private void Awake()
@@ -47,19 +43,7 @@ public class EnemyController : MonoBehaviour
         enemyElement = GetComponent<ElementComponent>();
         enemyWeapon = GetComponentInChildren<EnemyWeapon>();
 
-        // Check if attackersTracker has been assigned
-        if (attackersTracker == null)
-        {
-            // If not, first check if the player has one, and add one if not.
-            if (playerTransform.gameObject.GetComponent<EnemyAttackersTracker>() == null)
-            {
-                playerTransform.gameObject.AddComponent<EnemyAttackersTracker>();
-            }
-
-            // Then assign the player's EnemyAttackersTracker to the property
-            attackersTracker = playerTransform.gameObject.GetComponent<EnemyAttackersTracker>();
-        }
-
+        midAttackDistance = closeAttackDistance + ((farAttackDistance - closeAttackDistance) / 2);
 
         SwitchState(IdleState);
     }
