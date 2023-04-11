@@ -289,10 +289,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bf70b9c0a493784293fdb1be786a320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuButtonNames:
-  - PlayButton
-  - SettingsButton
-  - QuitButton
+  allButtonData:
+  - buttonName: PlayButton
+    type: 0
+    sceneDestinationKey: CharacterSelect
+  - buttonName: SettingsButton
+    type: 0
+    sceneDestinationKey: MainSettings
+  - buttonName: QuitButton
+    type: 2
+    sceneDestinationKey: 
 --- !u!1 &857005356
 GameObject:
   m_ObjectHideFlags: 0

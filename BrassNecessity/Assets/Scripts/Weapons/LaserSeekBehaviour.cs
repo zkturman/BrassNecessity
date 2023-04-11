@@ -81,7 +81,7 @@ public class LaserSeekBehaviour : MonoBehaviour
         laserRender.enabled = false;
         gameObject.SetActive(false);
         laserBeam.StartPos = oldStart;
-        hitEnemy.StopDamagingEnemy();
+        hitEnemy?.StopDamagingEnemy();
         hitEnemy = null;
     }
 
