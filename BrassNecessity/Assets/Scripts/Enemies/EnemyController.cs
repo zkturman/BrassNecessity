@@ -14,12 +14,12 @@ public class EnemyController : MonoBehaviour
     [HideInInspector] public Transform playerTransform;
     [HideInInspector] public ElementComponent enemyElement;
     [HideInInspector] public EnemySpawnManager spawnManager;
-    [HideInInspector] public EnemyWeapon enemyWeapon;
+    [HideInInspector] public HitDetector hitDetector;
 
     public float closeAttackDistance = 2f;
     public float farAttackDistance = 4f;
     [HideInInspector] public float midAttackDistance;
-    public float hangBackDistance = 7f;
+    public float hitDamage = 10f;
     public float enemyTurnSpeed = 5f;
     public float facingPlayerDegreesMargin = 10f;   // The plus/minus margin of error (in degrees) that the enemy can be facing to the left or right of the player but still be close enough to be considered 'facing the player'
     
@@ -41,7 +41,7 @@ public class EnemyController : MonoBehaviour
 
         animator = GetComponent<Animator>();
         enemyElement = GetComponent<ElementComponent>();
-        enemyWeapon = GetComponentInChildren<EnemyWeapon>();
+        hitDetector = GetComponentInChildren<HitDetector>();
 
         midAttackDistance = closeAttackDistance + ((farAttackDistance - closeAttackDistance) / 2);
 

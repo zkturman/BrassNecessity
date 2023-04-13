@@ -9,7 +9,7 @@ public class EnemyAttackState : EnemyBaseState
 
     public override void EnterState(EnemyController context)
     {
-        Debug.Log("Entering Attack state");
+        //Debug.Log("Entering Attack state");
 
         // Choose which attack to use this time        
         if (firstAttack)
@@ -26,7 +26,7 @@ public class EnemyAttackState : EnemyBaseState
         //context.enemyWeapon.ActivateWeapon();
 
         // New method: create one-time overlap sphere at start of attack
-        
+        context.hitDetector.DetectHit(context.hitDamage, context);
        
     }
 
@@ -36,17 +36,10 @@ public class EnemyAttackState : EnemyBaseState
         if (animName == "Attack")
         {
             // Attack animation has completed.
-            UpdateSettingsOnExit(context);
             context.SwitchState(context.IdleState);
         }
     }
 
-
-    void UpdateSettingsOnExit(EnemyController context)
-    {
-        context.enemyWeapon.DeactivateWeapon();
-        
-    }
 
 
     public override void UpdateState(EnemyController context)

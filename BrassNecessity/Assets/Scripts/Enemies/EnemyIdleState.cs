@@ -7,7 +7,7 @@ public class EnemyIdleState : EnemyBaseState
 {
     public override void EnterState(EnemyController context)
     {
-        Debug.Log("Entering Idle state");
+        //Debug.Log("Entering Idle state");
     }
 
 
@@ -20,12 +20,12 @@ public class EnemyIdleState : EnemyBaseState
         // Evaluate possible actions
         if (distance <= context.farAttackDistance)
         {
-            Debug.Log("IdleState: distance <= farAttackDistance");
+           //Debug.Log("IdleState: distance <= farAttackDistance");
             PrepareToAttack(context);
         }
         else
         {
-            Debug.Log("IdleState: distance > farAttackDistance");
+            //Debug.Log("IdleState: distance > farAttackDistance");
             MoveForwards(context);
         }
     }
