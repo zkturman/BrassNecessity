@@ -24,9 +24,8 @@ public class EnemyAttackState : EnemyBaseState
 
         // // Original method: activate trigger collider on EnemyWeapon component.
         //context.enemyWeapon.ActivateWeapon();
+        // // This has been replaced.  The attack animations now trigger an event on the EnemyController to detect if the player has been hit.
 
-        // New method: create one-time overlap sphere at start of attack
-        context.hitDetector.DetectHit(context.hitDamage, context);
        
     }
 

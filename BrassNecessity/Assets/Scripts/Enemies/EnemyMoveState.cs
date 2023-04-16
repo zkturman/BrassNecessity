@@ -10,7 +10,7 @@ public class EnemyMoveState : EnemyBaseState
 
     public override void EnterState(EnemyController context)
     {
-        Debug.Log("Entering Move State");
+        //Debug.Log("Entering Move State");
         
         // Update settings on enter
         context.animator.SetBool("WalkForwards", true);
@@ -34,7 +34,7 @@ public class EnemyMoveState : EnemyBaseState
 
         if (returnToIdle)
         {
-            Debug.Log("MoveState is returning to Idle");
+            //Debug.Log("MoveState is returning to Idle");
             ReturnToIdleState(context);
         }
         else
