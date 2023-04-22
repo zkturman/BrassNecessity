@@ -38,6 +38,11 @@ public class MenuController : MonoBehaviour
         gamepadTimeoutHandler = new FrameTimeoutHandler(gamepadInputTimeoutInSeconds);
         determineTimeout();
         startupTimeoutHandler = new FrameTimeoutHandler(menuStartupDelayInSeconds);
+        if (menuUI == null)
+        {
+            GameObject pauseMenu = FindObjectOfType<PauseMenuStatus>(true).gameObject;
+            menuUI = pauseMenu.GetComponent<MenuUIBehaviour>();
+        }
     }
 
     // Update is called once per frame

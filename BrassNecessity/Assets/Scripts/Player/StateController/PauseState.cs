@@ -13,7 +13,15 @@ public class PauseState : MonoBehaviour, IControllerState
 
     private void Awake()
     {
-        _input = GetComponent<PlayerControllerInputs>();
+        _input = GetComponentInParent<PlayerControllerInputs>();
+        if (menuStatus == null)
+        {
+            menuStatus = FindObjectOfType<PauseMenuStatus>(true);
+        }
+        if (pauseMenu == null)
+        {
+            pauseMenu = menuStatus.gameObject;
+        }
         NextState = this;
     }
 

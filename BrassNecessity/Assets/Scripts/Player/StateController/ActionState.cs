@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterController))]
 public class ActionState : MonoBehaviour, IControllerState
 {
     [SerializeField]
@@ -23,9 +22,9 @@ public class ActionState : MonoBehaviour, IControllerState
 
     private void Start()
     {
-        _animData.Animator = GetComponent<Animator>();
-        _controller = GetComponent<CharacterController>();
-        _input = GetComponent<PlayerControllerInputs>();
+        _animData.Animator = GetComponentInParent<Animator>();
+        _controller = GetComponentInParent<CharacterController>();
+        _input = GetComponentInParent<PlayerControllerInputs>();
         applyState = GetComponent<ElementApplyState>();
         mover = new InputAgnosticMover(_moveData, _jumpData);
         mover.AddAnimationManager(_animData);

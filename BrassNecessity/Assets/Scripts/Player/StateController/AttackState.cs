@@ -27,8 +27,8 @@ public class AttackState : MonoBehaviour, IControllerState
     private void Awake()
     {
         attackTimeoutHandler = new FrameTimeoutHandler(0f);
-        input = GetComponent<PlayerControllerInputs>();
-        animData.Animator = GetComponent<Animator>();
+        input = GetComponentInParent<PlayerControllerInputs>();
+        animData.Animator = GetComponentInParent<Animator>();
         mover = new InputAgnosticMover(moveData, jumpFallData);
         mover.AddAnimationManager(animData);
         applyState = GetComponent<ElementApplyState>();
