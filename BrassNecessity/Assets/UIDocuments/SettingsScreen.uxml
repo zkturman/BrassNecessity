@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UIDocuments/styles.uss?fileID=7433441132597879392&amp;guid=c30f6580d0acd8e429a717e8d1833395&amp;type=3#styles" />
+    <ui:VisualElement style="justify-content: space-around; align-items: center; width: 100%; height: 100%; background-color: rgb(0, 0, 0);">
+        <ui:VisualElement style="width: 40%; height: 15%;">
+            <ui:Label text="Settings" display-tooltip-when-elided="true" name="SettingsTitle" class="uiTitleText" />
+        </ui:VisualElement>
+        <ui:VisualElement style="width: 85%; height: 220px; justify-content: flex-start; align-items: center;">
+            <ui:SliderInt picking-mode="Ignore" label="Sensitivity" value="6" high-value="10" low-value="1" name="SensitivitySlider" class="settingSlider" />
+            <ui:SliderInt picking-mode="Ignore" label="Brightness" value="5" high-value="10" low-value="1" name="BrightnessSlider" class="settingSlider" />
+            <ui:SliderInt picking-mode="Ignore" label="Music Volume" value="5" high-value="10" low-value="1" name="MusicVolumeSlider" class="settingSlider" />
+            <ui:SliderInt picking-mode="Ignore" label="Effects Volume" value="6" high-value="10" low-value="1" name="SoundFxVolumeSlider" class="settingSlider" />
+        </ui:VisualElement>
+        <ui:VisualElement style="width: auto; height: 120px; align-items: center; flex-direction: row;">
+            <ui:Button text="Save" display-tooltip-when-elided="true" name="SaveButton" class="menuButton" />
+            <ui:Button text="Exit" display-tooltip-when-elided="true" name="ExitButton" class="menuButton" />
+        </ui:VisualElement>
+        <ui:VisualElement>
+            <ui:Label text="Press L to select." display-tooltip-when-elided="true" name="InstructionLabel" style="color: rgb(255, 255, 255); font-size: 18px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

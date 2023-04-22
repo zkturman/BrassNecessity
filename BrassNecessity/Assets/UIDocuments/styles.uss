@@ -53,3 +53,68 @@
     margin-bottom: 15px;
     scale: 1.1 1.1;
 }
+
+SliderInt.settingSlider {
+    width: 100%;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 32px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    -unity-font-style: bold;
+}
+
+#unity-tracker {
+    background-color: rgb(35, 103, 0);
+    border-left-color: rgb(56, 173, 0);
+    border-right-color: rgb(56, 173, 0);
+    border-top-color: rgb(56, 173, 0);
+    border-bottom-color: rgb(56, 173, 0);
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    height: 8px;
+}
+
+SliderInt.settingSliderSelected {
+    background-color: rgb(58, 58, 58);
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-left-width: 3px;
+    border-right-width: 3px;
+    border-top-width: 3px;
+    border-bottom-width: 3px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    scale: 1.02 1.2;
+    height: 40px;
+    margin-left: 6px;
+    margin-right: 6px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.uiTitleText {
+    -unity-font-style: bold;
+    font-size: 75px;
+    color: rgb(35, 103, 0);
+    -unity-text-align: upper-center;
+    -unity-text-outline-width: 3px;
+    -unity-text-outline-color: rgb(56, 173, 0);
+}
+
+.unity-base-slider__label {
+    -unity-text-align: middle-left;
+}

@@ -17,6 +17,10 @@ public class ElementComponent : MonoBehaviour
         {
             ElementInfo = new ElementPair(primaryType);
         }
+        else if (ElementInfo == null)
+        {
+            ElementInfo = new ElementPair(primaryType);
+        }
     }
 
     // Start is called before the first frame update

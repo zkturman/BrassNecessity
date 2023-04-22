@@ -2,8 +2,8 @@ using UnityEngine.UIElements;
 
 public class MenuButtonFactory
 {
-    public MenuButtonFactory() { }
-    public GenericButton CreateButton(MenuButtonData buttonData, Button button)
+    private MenuButtonFactory() { }
+    public static GenericButton CreateButton(MenuButtonData buttonData, Button button)
     {
         MenuButtonType type = buttonData.Type;
         GenericButton buttonToCreate;
@@ -12,11 +12,20 @@ public class MenuButtonFactory
             case MenuButtonType.Scene:
                 buttonToCreate = new SceneButton(buttonData, button);
                 break;
+            case MenuButtonType.OpenMenu:
+                buttonToCreate = new OpenMenuButton(buttonData, button);
+                break;
             case MenuButtonType.CloseMenu:
-                buttonToCreate = new GenericButton(buttonData, button);
+                buttonToCreate = new CloseMenuButton(buttonData, button);
                 break;
             case MenuButtonType.QuitGame:
                 buttonToCreate = new QuitButton(buttonData, button);
+                break;
+            case MenuButtonType.SaveSettingsScene:
+                buttonToCreate = new SaveSettingSceneButton(buttonData, button);
+                break;
+            case MenuButtonType.SaveSettingsClose:
+                buttonToCreate = new SaveSettingsCloseButton(buttonData, button);
                 break;
             default:
                 throw new System.ArgumentException("Button type " + type.ToString() + " not supported.");

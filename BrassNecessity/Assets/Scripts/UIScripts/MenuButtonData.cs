@@ -4,14 +4,9 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class MenuButtonData
+public class MenuButtonData : UIElementData
 {
-    [SerializeField]
-    private string buttonName;
-    public string ButtonName
-    {
-        get => buttonName;
-    }
+
     [SerializeField]
     private MenuButtonType type;
     public MenuButtonType Type
@@ -20,9 +15,38 @@ public class MenuButtonData
     }
 
     [SerializeField]
-    private string sceneDestinationKey;
-    public string SceneDestinationKey
+    private SceneKey sceneDestination;
+    public SceneKey SceneDestination
     {
-        get => sceneDestinationKey;
+        get => sceneDestination;
     }
+
+    [SerializeField]
+    private GameObject activatedMenu;
+    public GameObject ActivatedMenu
+    {
+        get => activatedMenu;
+    }
+
+    [SerializeField]
+    private GameObject hidMenu;
+    public GameObject HidMenu
+    {
+        get => hidMenu;
+    }
+
+    [SerializeField]
+    private GameObject deactivatedMenu;
+    public GameObject DeactivatedMenu
+    {
+        get => deactivatedMenu;
+    }
+
+    [SerializeField]
+    private GameObject unhidMenu;
+    public GameObject UnhidMenu
+    {
+        get => unhidMenu;
+    }
+
 }
