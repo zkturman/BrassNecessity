@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 [SelectionBase]    // (If you click any child objects in the inspector, it will automatically select the parent object which contains this script
 [RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(ElementComponent))]
+[RequireComponent (typeof(ElementComponent))]
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyController : MonoBehaviour
 {
@@ -12,9 +12,8 @@ public class EnemyController : MonoBehaviour
     [HideInInspector] public Animator animator;
     [HideInInspector] public NavMeshAgent navAgent;
     [HideInInspector] public Transform playerTransform;
-    [HideInInspector] public ElementComponent enemyElement;
+    [HideInInspector] public ElementComponent elementComponent;
     [HideInInspector] public EnemySpawnManager spawnManager;
-    [HideInInspector] public HitDetector hitDetector;
 
     public float closeAttackDistance = 2f;
     public float farAttackDistance = 4f;
@@ -47,12 +46,18 @@ public class EnemyController : MonoBehaviour
         navAgent.isStopped = false;
 
         animator = GetComponent<Animator>();
-        enemyElement = GetComponent<ElementComponent>();
-        hitDetector = GetComponentInChildren<HitDetector>();
+        elementComponent = GetComponent<ElementComponent>();
 
         midAttackDistance = closeAttackDistance + ((farAttackDistance - closeAttackDistance) / 2);
 
         SwitchState(IdleState);
+    }
+
+
+    public void SetElement(Element.Type newElement)
+    {
+        elementComponent.SwitchType(newElement);
+        // PLUS: add in code to update the colour of the crystal shards on the enemy
     }
 
 
@@ -69,14 +74,6 @@ public class EnemyController : MonoBehaviour
         // currentState will pass in a reference to one of this EnemyController's other public state properties (e.g. MoveState or AttackState)
         currentState = newState;
         currentState.EnterState(this);
-    }
-
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        // The EnemyController receives the OnCollisionEntered message because it is a monobehaviour, but the concrete states don't
-        // So when the EnemyController receives a collision, it triggers a separate method in the current concrete class to process it.
-        currentState.CollisonEntered(this, collision);
     }
 
 
@@ -114,17 +111,8 @@ public class EnemyController : MonoBehaviour
 
     public bool EnemyIsFacingPlayer()
     {
-
         float angle = Vector3.Angle(FlatDirectionToPlayer(), FlatEnemyFacingDirection());
         bool isFacing = angle < facingPlayerDegreesMargin;
-        
-        //if (isFacing) {
-        //    Debug.Log("Enemy is facing player");
-        //} else
-        //{
-        //    Debug.Log("Enemy is --NOT-- facing player");
-        //}
-
         return isFacing;
     }
 
@@ -151,7 +139,7 @@ public class EnemyController : MonoBehaviour
         // This is called by an animation event in the two attack animations
         // Cast a box-shaped cast from the character's position forward
         RaycastHit hit;
-        if (Physics.BoxCast(transform.position, hitDetectBoxSize, transform.forward, out hit, transform.rotation, hitDetectDistance))
+        if (Physics.BoxCast(transform.position, hitDetectBoxSize, transform.forward, out hit, transform.rotation, hitDetectDistance, playerLayerMask))
         {
             // Check if the hit object matches the object we're testing for
             if (hit.collider.transform == playerTransform)
@@ -159,14 +147,14 @@ public class EnemyController : MonoBehaviour
                 // The object is in the defined space
 
                 playerHealthHandler.DamagePlayer(hitDamage);
-                Debug.Log("Player hit!  Player health = " + playerHealthHandler.Health);
+                //Debug.Log("Player hit!  Player health = " + playerHealthHandler.Health);
             } else
             {
-                Debug.Log("TestIfEnemyHitPlayer() has detected something, but not the player: " + hit.collider.gameObject.name);
+                //Debug.Log("TestIfEnemyHitPlayer() has detected something, but not the player: " + hit.collider.gameObject.name);
             }
         } else
         {
-            Debug.Log("TestIfEnemyHitPlayer() has run but not detected the player.");
+            //Debug.Log("TestIfEnemyHitPlayer() has run but not detected the player.");
         }
 
         // Visualize the BoxCast in the Scene view
@@ -182,12 +170,25 @@ public class EnemyController : MonoBehaviour
     }
 
 
-    public void TestIfEnemyHitPlayer2()
+    public void LaserContactBegins()
     {
-        // For some reason, I can't get both attack animations to successfully trigger the same event name, so now the
-        // shield attack animation triggers this one instead, which then calls the original attack method anyway.
-        Debug.Log("Shield attack has happened");
-        TestIfEnemyHitPlayer();
+        //Debug.Log("Laser contact has STARTED!!!");
+        animator.SetBool("WalkForwards", false);
+        navAgent.isStopped = true;
+        SwitchState(GotHitState);
+    }
+
+
+    public void LaserContactEnds()
+    {
+        //Debug.Log("Laser contact has ENDED!!!");
+        SwitchState(IdleState);
+    }
+
+
+    public void EnemyHasDied()
+    {
+        SwitchState(DieState);
     }
 
 

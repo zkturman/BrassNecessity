@@ -1,3 +1,4 @@
+using Palmmedia.ReportGenerator.Core.Parser.Analysis;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -75,9 +76,9 @@ public class EnemySpawnManager : MonoBehaviour
         
         
         // Spawn enemy
-        EnemyController newEnemy = Instantiate(enemyPrefab, spawnPoints[spawnPointNum].transform.position, spawnPoints[0].transform.rotation, spawnedEnemiesHolder).GetComponent<EnemyController>();
+        EnemyController newEnemy = Instantiate(enemyPrefab, spawnPoints[spawnPointNum].transform.position, spawnPoints[spawnPointNum].transform.rotation, spawnedEnemiesHolder).GetComponent<EnemyController>();
         newEnemy.spawnManager = this;
-        
+        newEnemy.SetElement(ChooseElement());
         
         // Update counters
         remainingEnemiesToBeSpawned--;
@@ -91,6 +92,16 @@ public class EnemySpawnManager : MonoBehaviour
     }
 
 
+    private Element.Type ChooseElement()
+    {
+        // *** CODE NEEDS UPDATING TO RANDOMISE OR LOOP ***
+        int randomElementNum = Random.Range(1, 4);
+        Debug.Log("Random element number = " +  randomElementNum);
+
+        return Element.Type.Gravity;
+    }
+
+
     public void EnemyHasDied()
     {
         // This is called when an EnemyController goes through the Die state
@@ -99,7 +110,7 @@ public class EnemySpawnManager : MonoBehaviour
 
     void FinalEnemySpawned()
     {
-        // Code to run as soon as 
+        // Code to run when the final enemy has been spawned
     }
 
 

@@ -31,7 +31,7 @@ public class EnemyHealthHandler : MonoBehaviour
         }
     }
 
-    public void StopDamagingEnemy()
+    public virtual void StopDamagingEnemy()
     {
         IsTakingDamage = false;
     }
