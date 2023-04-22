@@ -9,9 +9,7 @@ public class EnemyAttackState : EnemyBaseState
 
     public override void EnterState(EnemyController context)
     {
-        Debug.Log("Entering Attack state");
-        context.attackersTracker.numOfAttackers++;
-
+        //Debug.Log("Entering Attack state");
 
         // Choose which attack to use this time        
         if (firstAttack)
@@ -24,9 +22,23 @@ public class EnemyAttackState : EnemyBaseState
             firstAttack = true;
         }
 
-        context.enemyWeapon.ActivateWeapon();
+        // // Original method: activate trigger collider on EnemyWeapon component.
+        //context.enemyWeapon.ActivateWeapon();
+        // // This has been replaced.  The attack animations now trigger an event on the EnemyController to detect if the player has been hit.
+
        
     }
+
+
+    public override void AnimationClipFinished(EnemyController context, string animName)
+    {
+        if (animName == "Attack")
+        {
+            // Attack animation has completed.
+            context.SwitchState(context.IdleState);
+        }
+    }
+
 
 
     public override void UpdateState(EnemyController context)
@@ -39,25 +51,6 @@ public class EnemyAttackState : EnemyBaseState
     {
 
     }
-
-
-    public override void AnimationClipFinished(EnemyController context, string animName)
-    {
-        if (animName == "Attack")
-        {
-            // Attack animation has completed.
-            UpdateSettingsOnExit(context);
-            context.SwitchState(context.IdleState);
-        }
-    }
-
-
-    void UpdateSettingsOnExit(EnemyController context)
-    {
-        context.enemyWeapon.DeactivateWeapon();
-        context.attackersTracker.numOfAttackers--;
-    }
-
 
 
 }

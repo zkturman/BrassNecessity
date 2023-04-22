@@ -14,26 +14,28 @@ public class EnemyController : MonoBehaviour
     [HideInInspector] public Transform playerTransform;
     [HideInInspector] public ElementComponent enemyElement;
     [HideInInspector] public EnemySpawnManager spawnManager;
-    [HideInInspector] public EnemyWeapon enemyWeapon;
-    [HideInInspector] public EnemyAttackersTracker attackersTracker;
-
+    [HideInInspector] public HitDetector hitDetector;
 
     public float closeAttackDistance = 2f;
     public float farAttackDistance = 4f;
-    public float hangBackDistance = 7f;
+    [HideInInspector] public float midAttackDistance;
+    public float hitDamage = 10f;
     public float enemyTurnSpeed = 5f;
     public float facingPlayerDegreesMargin = 10f;   // The plus/minus margin of error (in degrees) that the enemy can be facing to the left or right of the player but still be close enough to be considered 'facing the player'
-    
+
+    public float hitDetectDistance = 1f;
+    public Vector3 hitDetectBoxSize = new Vector3(0.5f, 0.5f, 0.5f);
+    public LayerMask playerLayerMask;
+    PlayerHealthHandler playerHealthHandler;
+    Color debugColor = Color.red;
 
     // State machine properties
     EnemyBaseState currentState;
     public EnemyIdleState IdleState = new EnemyIdleState();    // These 'potential' states need to be public so that the concrete State classes can refer to them when telling the Controller which state to switch to
     public EnemyMoveState MoveState = new EnemyMoveState();
     public EnemyAttackState AttackState = new EnemyAttackState();
-    public EnemyBackPedalState BackPedalState = new EnemyBackPedalState();
     public EnemyGotHitState GotHitState = new EnemyGotHitState();
     public EnemyDieState DieState = new EnemyDieState();
-
 
 
     private void Awake()
@@ -41,25 +43,14 @@ public class EnemyController : MonoBehaviour
         // NavMeshAgent
         navAgent = GetComponent<NavMeshAgent>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        playerHealthHandler = playerTransform.GetComponent<PlayerHealthHandler>();
         navAgent.isStopped = false;
 
         animator = GetComponent<Animator>();
         enemyElement = GetComponent<ElementComponent>();
-        enemyWeapon = GetComponentInChildren<EnemyWeapon>();
+        hitDetector = GetComponentInChildren<HitDetector>();
 
-        // Check if attackersTracker has been assigned
-        if (attackersTracker == null)
-        {
-            // If not, first check if the player has one, and add one if not.
-            if (playerTransform.gameObject.GetComponent<EnemyAttackersTracker>() == null)
-            {
-                playerTransform.gameObject.AddComponent<EnemyAttackersTracker>();
-            }
-
-            // Then assign the player's EnemyAttackersTracker to the property
-            attackersTracker = playerTransform.gameObject.GetComponent<EnemyAttackersTracker>();
-        }
-
+        midAttackDistance = closeAttackDistance + ((farAttackDistance - closeAttackDistance) / 2);
 
         SwitchState(IdleState);
     }
@@ -152,6 +143,53 @@ public class EnemyController : MonoBehaviour
         Vector3 targetPosition = playerTransform.position + (playerToEnemyDirection * distanceFromPlayer);
         return targetPosition;
     }
+
+
+    
+    public void TestIfEnemyHitPlayer()
+    {
+        // This is called by an animation event in the two attack animations
+        // Cast a box-shaped cast from the character's position forward
+        RaycastHit hit;
+        if (Physics.BoxCast(transform.position, hitDetectBoxSize, transform.forward, out hit, transform.rotation, hitDetectDistance))
+        {
+            // Check if the hit object matches the object we're testing for
+            if (hit.collider.transform == playerTransform)
+            {
+                // The object is in the defined space
+
+                playerHealthHandler.DamagePlayer(hitDamage);
+                Debug.Log("Player hit!  Player health = " + playerHealthHandler.Health);
+            } else
+            {
+                Debug.Log("TestIfEnemyHitPlayer() has detected something, but not the player: " + hit.collider.gameObject.name);
+            }
+        } else
+        {
+            Debug.Log("TestIfEnemyHitPlayer() has run but not detected the player.");
+        }
+
+        // Visualize the BoxCast in the Scene view
+        Debug.DrawRay(transform.position, transform.forward * hitDetectDistance, debugColor);
+        Debug.DrawRay(transform.position + transform.right * hitDetectBoxSize.x, transform.forward * hitDetectDistance, debugColor);
+        Debug.DrawRay(transform.position - transform.right * hitDetectBoxSize.x, transform.forward * hitDetectDistance, debugColor);
+        Debug.DrawRay(transform.position + transform.up * hitDetectBoxSize.y, transform.forward * hitDetectDistance, debugColor);
+        Debug.DrawRay(transform.position - transform.up * hitDetectBoxSize.y, transform.forward * hitDetectDistance, debugColor);
+        Debug.DrawRay(transform.position + transform.forward * hitDetectBoxSize.z, transform.right * hitDetectBoxSize.x * 2, debugColor);
+        Debug.DrawRay(transform.position - transform.forward * hitDetectBoxSize.z, transform.right * hitDetectBoxSize.x * 2, debugColor);
+        Debug.DrawRay(transform.position + transform.forward * hitDetectBoxSize.z, transform.up * hitDetectBoxSize.y * 2, debugColor);
+        Debug.DrawRay(transform.position - transform.forward * hitDetectBoxSize.z, transform.up * hitDetectBoxSize.y * 2, debugColor);
+    }
+
+
+    public void TestIfEnemyHitPlayer2()
+    {
+        // For some reason, I can't get both attack animations to successfully trigger the same event name, so now the
+        // shield attack animation triggers this one instead, which then calls the original attack method anyway.
+        Debug.Log("Shield attack has happened");
+        TestIfEnemyHitPlayer();
+    }
+
 
 
     [ContextMenu("Kill this enemy (debug)")]
