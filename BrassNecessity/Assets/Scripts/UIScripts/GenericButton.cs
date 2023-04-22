@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UIElements;
+using System.Linq;
 
 [Serializable]
-public class GenericButton : IMenuButton
+public abstract class GenericButton : IMenuButton
 {
     protected MenuButtonData menuButtonData;
     protected Button button;
@@ -16,13 +17,12 @@ public class GenericButton : IMenuButton
         this.button = button;
     }
 
-    public virtual void Execute()
-    {
-        Debug.Log(menuButtonData.ButtonName + " was selected.");
-    }
+    public abstract void Execute();
 
     public void ToggleSelect()
     {
+        string[] test = button.GetClasses().ToArray();
         button.ToggleInClassList("menuButtonSelect");
+        test = button.GetClasses().ToArray();
     }
 }

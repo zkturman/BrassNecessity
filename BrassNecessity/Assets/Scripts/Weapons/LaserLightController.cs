@@ -20,6 +20,14 @@ public class LaserLightController : MonoBehaviour
     [SerializeField]
     private ImpactBehaviour laserBaseEffect;
 
+    private void Awake()
+    {
+        if (data == null)
+        {
+            data = FindObjectOfType<ElementData>();
+        }
+    }
+
     private void Start()
     {
         setColors(elementComponent.ElementInfo);

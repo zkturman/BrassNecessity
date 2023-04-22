@@ -5,6 +5,9 @@ using UnityEngine;
 public enum MenuButtonType
 {
     Scene,
+    OpenMenu,
     CloseMenu,
-    QuitGame
+    QuitGame,
+    SaveSettingsScene,
+    SaveSettingsClose
 }

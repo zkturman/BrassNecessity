@@ -2,30 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(IMenuNavigator))]
 public class MenuController : MonoBehaviour
 {
     [SerializeField]
     private PlayerControllerInputs input;
-    private MenuNavigationControls controlHandler;
 
     [SerializeField]
     private float keyboardInputTimeoutInSeconds = 0.2f;
     [SerializeField]
     private float gamepadInputTimeoutInSeconds = 0.4f;
-    private float inputTimeoutInSeconds;
+    [SerializeField]
+    private float menuStartupDelayInSeconds = 0.5f;
     private FrameTimeoutHandler keyboardTimeoutHandler;
     private FrameTimeoutHandler gamepadTimeoutHandler;
     private FrameTimeoutHandler inputTimeoutHandler;
+    private FrameTimeoutHandler startupTimeoutHandler;
+    private IMenuNavigator buttonNavigator;
 
     [SerializeField]
-    private StartScreenUIBehaviour menuUI;
+    private MenuUIBehaviour menuUI;
+    public MenuUIBehaviour MenuUI
+    {
+        set
+        {
+            menuUI = value;
+            startupTimeoutHandler.ResetTimeout();
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
-        controlHandler = new MenuNavigationControls(input);
+        buttonNavigator = GetComponent<IMenuNavigator>();
         keyboardTimeoutHandler = new FrameTimeoutHandler(keyboardInputTimeoutInSeconds);
         gamepadTimeoutHandler = new FrameTimeoutHandler(gamepadInputTimeoutInSeconds);
         determineTimeout();
+        startupTimeoutHandler = new FrameTimeoutHandler(menuStartupDelayInSeconds);
+        if (menuUI == null)
+        {
+            GameObject pauseMenu = FindObjectOfType<PauseMenuStatus>(true).gameObject;
+            menuUI = pauseMenu.GetComponent<MenuUIBehaviour>();
+        }
     }
 
     // Update is called once per frame
@@ -40,18 +57,30 @@ public class MenuController : MonoBehaviour
         {
             inputTimeoutHandler.UpdateTimePassed(Time.deltaTime);
         }
-        if (input.shoot)
+        if (startupTimeoutHandler.HasTimeoutEnded())
         {
-            menuUI.ExecuteCurrentButton();
+            handleExecuteInput();
+        }
+        else
+        {
+            startupTimeoutHandler.UpdateTimePassed(Time.deltaTime);
         }
     }
 
     private void findMenuInput()
     {
-        int navigationValue = controlHandler.GetVerticalMovement();
-        if (navigationValue != 0){
-            menuUI.NavigateToNextButton(navigationValue);
+        Vector2 navigationValue = buttonNavigator.GetMenuMovement();
+        if (navigationValue != Vector2.zero){
+            menuUI.NavigateToNextElement(navigationValue);
             inputTimeoutHandler.ResetTimeout();
+        }
+    }
+
+    private void handleExecuteInput()
+    {
+        if (buttonNavigator.ShouldExecute())
+        {
+            menuUI.ExecuteCurrentButton();
         }
     }
 
@@ -59,12 +88,10 @@ public class MenuController : MonoBehaviour
     {
         if (CurrentDevice.IsCurrentDeviceKeyboard())
         {
-            inputTimeoutInSeconds = keyboardInputTimeoutInSeconds;
             inputTimeoutHandler = keyboardTimeoutHandler;
         }
         else
         {
-            inputTimeoutInSeconds = gamepadInputTimeoutInSeconds;
             inputTimeoutHandler = gamepadTimeoutHandler;
         }
     }

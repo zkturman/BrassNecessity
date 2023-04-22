@@ -23,6 +23,16 @@ public class MenuNavigationControls
         return getDirectionValue(horizontalMovement);
     }
 
+    public bool GetNormalShootSelect()
+    {
+        return input.shoot;
+    }
+
+    public bool GetStrafeShootSelect()
+    {
+        return input.strafe;
+    }
+
     private int getDirectionValue(float movementValue)
     {
         int directionValue = 0;

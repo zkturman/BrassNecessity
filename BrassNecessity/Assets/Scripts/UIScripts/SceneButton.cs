@@ -11,7 +11,6 @@ public class SceneButton : GenericButton
 
     public override void Execute()
     {
-        base.Execute();
-        Debug.Log("Going to " + menuButtonData.SceneDestinationKey);
+        SceneNavigator.OpenScene(menuButtonData.SceneDestination);
     }
 }

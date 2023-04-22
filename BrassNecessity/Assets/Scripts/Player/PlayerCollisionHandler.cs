@@ -10,7 +10,7 @@ public class PlayerCollisionHandler : MonoBehaviour
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
-        applyState = GetComponent<ElementApplyState>();
+        applyState = GetComponentInChildren<ElementApplyState>();
         healthHandler = GetComponent<PlayerHealthHandler>();
     }
     // Start is called before the first frame update

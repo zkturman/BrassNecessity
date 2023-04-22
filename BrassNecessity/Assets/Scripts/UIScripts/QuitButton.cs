@@ -11,7 +11,6 @@ public class QuitButton : GenericButton
 
     public override void Execute()
     {
-        base.Execute();
 #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
 #else

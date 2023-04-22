@@ -13,6 +13,10 @@ public class HealthUIHanlder : MonoBehaviour
     {
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
         healthLabel = root.Q<Label>("HealthValue");
+        if (playerHealth == null)
+        {
+            playerHealth = FindObjectOfType<PlayerHealthHandler>();
+        }
     }
 
     private void Update()

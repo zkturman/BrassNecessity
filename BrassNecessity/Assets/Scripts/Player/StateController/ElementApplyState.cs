@@ -27,7 +27,7 @@ public class ElementApplyState : MonoBehaviour, IControllerState
         timeoutHandler = new FrameTimeoutHandler(applyTimeout);
         laserElement = playerLaser.GetComponent<ElementComponent>();
         availableElements = new Queue<ElementComponent>();
-        input = GetComponent<PlayerControllerInputs>();
+        input = GetComponentInParent<PlayerControllerInputs>();
         mover = new InputAgnosticMover(moveData, jumpData);
         mover.AddAnimationManager(animationManager);
     }
