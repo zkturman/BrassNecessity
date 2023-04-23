@@ -42,6 +42,8 @@ public class LaserSeekBehaviour : MonoBehaviour
         RaycastHit target;
         Vector3 raycastStart = transform.position;
         Vector3 raycastDirection = transform.TransformDirection(Vector3.up);
+        bool shouldCheckEnemy = false;
+        bool isHittingEnemy = false;
         if (Physics.Raycast(raycastStart, raycastDirection, out target, Mathf.Infinity, ignoreLayers))
         {
             laserRender.enabled = true;
@@ -50,26 +52,31 @@ public class LaserSeekBehaviour : MonoBehaviour
             laserSplash.transform.localPosition = new Vector3(0, targetDistance, 0);
             Vector3 newEndPos = new Vector3(0, targetDistance, 0);
             laserBeam.EndPos = newEndPos;
+            shouldCheckEnemy = true;
+        }
+        if (shouldCheckEnemy)
+        {
+            isHittingEnemy = target.collider.TryGetComponent(out hitEnemy);
+        }
+        if (isHittingEnemy)
+        {
             handleEnemyCollision(target);
+        }
+        else
+        {
+            impactEffect.ResetEffects();
         }
         laserBeam.UpdateLineScale();
     }
 
     private void handleEnemyCollision(RaycastHit target)
     {
-        if (target.collider.TryGetComponent(out hitEnemy))
-        {
-            ElementPair enemyElement = target.collider.GetComponent<ElementComponent>().ElementInfo;
-            ElementPair laserElement = weaponElement.ElementInfo;
-            float multiplier = ElementMultiplierGrid.GetAttackMultiplier(laserElement.Primary, enemyElement.Primary);
-            impactEffect.SetImpactEffects(multiplier);
-            float damage = baseDamagePerSecond * multiplier * Time.deltaTime;
-            hitEnemy.DamageEnemy(damage);
-        }
-        else
-        {
-            impactEffect.ResetEffects();
-        }
+        ElementPair enemyElement = target.collider.GetComponent<ElementComponent>().ElementInfo;
+        ElementPair laserElement = weaponElement.ElementInfo;
+        float multiplier = ElementMultiplierGrid.GetAttackMultiplier(laserElement.Primary, enemyElement.Primary);
+        impactEffect.SetImpactEffects(multiplier);
+        float damage = baseDamagePerSecond * multiplier * Time.deltaTime;
+        hitEnemy.DamageEnemy(damage);
     }
 
     public void FinishSeeking()
@@ -81,8 +88,9 @@ public class LaserSeekBehaviour : MonoBehaviour
         laserRender.enabled = false;
         gameObject.SetActive(false);
         laserBeam.StartPos = oldStart;
-        hitEnemy?.StopDamagingEnemy();
+        impactEffect.ResetEffects(); 
         hitEnemy = null;
+        
     }
 
     private void OnDrawGizmosSelected()

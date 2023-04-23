@@ -7,11 +7,13 @@ public class TestItemPickup
     private MonoBehaviour testItem;
     private MeshRenderer testMesh;
     private Collider collider;
-    public TestItemPickup(MonoBehaviour testItem)
+    private GameObject[] itemsToHide;
+    public TestItemPickup(MonoBehaviour testItem, GameObject[] itemsToHide)
     {
         this.testItem = testItem;
         testMesh = testItem.GetComponent<MeshRenderer>();
         collider = testItem.GetComponent<Collider>();
+        this.itemsToHide = itemsToHide;
     }
 
     public void PickupItem(float disabledTime)
@@ -21,11 +23,28 @@ public class TestItemPickup
 
     private IEnumerator disablePickup(float disabledTime)
     {
-        testMesh.enabled = false;
-        collider.enabled = false;
+        setEnabledStatus(false);
         yield return new WaitForSeconds(disabledTime);
-        testMesh.enabled = true;
-        collider.enabled = true;
+        setEnabledStatus(true);
+    }
+
+    private void setEnabledStatus(bool shouldEnable)
+    {
+        if (testMesh != null)
+        {
+            testMesh.enabled = shouldEnable;
+        }
+        if (collider != null)
+        {
+            collider.enabled = shouldEnable;
+        }
+        if (itemsToHide != null)
+        {
+            for (int i = 0; i < itemsToHide.Length; i++)
+            {
+                itemsToHide[i].SetActive(shouldEnable);
+            }
+        }
     }
 }
 

@@ -17,7 +17,7 @@ public class PlayerHealthHandler : MonoBehaviour
         Health -= damageAmount;
         if (Health < 0f)
         {
-            Debug.Log("Game over.");
+            SceneNavigator.OpenScene(SceneKey.GameOver);
         }
     }
 
@@ -28,5 +28,10 @@ public class PlayerHealthHandler : MonoBehaviour
         {
             Health = baseHealth;
         }
+    }
+
+    public bool AtMaxHealth()
+    {
+        return Mathf.Approximately(Health, baseHealth);
     }
 }

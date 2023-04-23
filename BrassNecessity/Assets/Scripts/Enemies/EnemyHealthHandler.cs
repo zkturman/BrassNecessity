@@ -8,7 +8,6 @@ public class EnemyHealthHandler : MonoBehaviour
     protected float baseHealth = 80f;
     public float Health { get; protected set; }
     public bool IsDead { get; protected set; }
-    public bool IsTakingDamage { get; protected set; }
 
     protected void Awake()
     {
@@ -24,15 +23,9 @@ public class EnemyHealthHandler : MonoBehaviour
     public virtual void DamageEnemy(float damageAmount)
     {
         Health -= damageAmount;
-        IsTakingDamage = true;
         if (Health < 0)
         {
             IsDead = true;
         }
-    }
-
-    public void StopDamagingEnemy()
-    {
-        IsTakingDamage = false;
     }
 }

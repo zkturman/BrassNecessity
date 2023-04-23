@@ -42,8 +42,11 @@ public class PlayerCollisionHandler : MonoBehaviour
             HealthPickup healthItem;
             if (collision.collider.TryGetComponent<HealthPickup>(out healthItem))
             {
-                healthHandler.HealPlayer(healthItem.HealthValue);
-                healthItem.PickupItem();
+                if (!healthHandler.AtMaxHealth())
+                {
+                    healthHandler.HealPlayer(healthItem.HealthValue);
+                    healthItem.PickupItem();
+                }
             }
         }
     }
