@@ -145,7 +145,6 @@ public class EnemyController : MonoBehaviour
             if (hit.collider.transform == playerTransform)
             {
                 // The object is in the defined space
-
                 playerHealthHandler.DamagePlayer(hitDamage);
                 //Debug.Log("Player hit!  Player health = " + playerHealthHandler.Health);
             } else
