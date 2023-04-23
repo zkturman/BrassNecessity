@@ -29,7 +29,7 @@ public class EnemyController : MonoBehaviour
     Color debugColor = Color.red;
 
     // State machine properties
-    EnemyBaseState currentState;
+    public EnemyBaseState currentState { get; private set; }
     public EnemyIdleState IdleState = new EnemyIdleState();    // These 'potential' states need to be public so that the concrete State classes can refer to them when telling the Controller which state to switch to
     public EnemyMoveState MoveState = new EnemyMoveState();
     public EnemyAttackState AttackState = new EnemyAttackState();
@@ -171,17 +171,9 @@ public class EnemyController : MonoBehaviour
 
     public void LaserContactBegins()
     {
-        //Debug.Log("Laser contact has STARTED!!!");
         animator.SetBool("WalkForwards", false);
         navAgent.isStopped = true;
         SwitchState(GotHitState);
-    }
-
-
-    public void LaserContactEnds()
-    {
-        //Debug.Log("Laser contact has ENDED!!!");
-        SwitchState(IdleState);
     }
 
 

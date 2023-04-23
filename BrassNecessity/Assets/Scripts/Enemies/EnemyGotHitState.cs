@@ -22,7 +22,11 @@ public class EnemyGotHitState : EnemyBaseState
 
     public override void AnimationClipFinished(EnemyController context, string animName)
     {
-        // N/a   
+        if (animName == "GetHitAnim")
+        {
+            // Attack animation has completed.
+            context.SwitchState(context.IdleState);
+        }
     }
 
 

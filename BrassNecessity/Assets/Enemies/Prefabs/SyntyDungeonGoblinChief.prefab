@@ -511,7 +511,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 237b6623c70d28443805a18e7738706f, type: 2}
+  - {fileID: 2100000, guid: 4ddc6b2ac11c7e34ba59672700e0eadd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2750,6 +2750,7 @@ GameObject:
   - component: {fileID: 1812641744891033672}
   - component: {fileID: 1812641745384876276}
   - component: {fileID: 8876260216095072482}
+  - component: {fileID: 566807082}
   m_Layer: 0
   m_Name: SyntyDungeonGoblinChief
   m_TagString: Untagged
@@ -2861,8 +2862,8 @@ MonoBehaviour:
   animator: {fileID: 0}
   navAgent: {fileID: 0}
   playerTransform: {fileID: 0}
+  elementComponent: {fileID: 0}
   spawnManager: {fileID: 0}
-  hitDetector: {fileID: 0}
   closeAttackDistance: 1.5
   farAttackDistance: 2.5
   midAttackDistance: 0
@@ -2899,8 +2900,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1026f627270fe3847aee2d6268b7f35c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primaryType: 0
+  primaryType: 4
   secondaryType: 0
+--- !u!114 &566807082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5777432463612613998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 750b59299c54d354490cafc77e2fd747, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementInfo: {fileID: 8876260216095072482}
+  data: {fileID: 0}
+  batteryTanks:
+  - {fileID: 5252644770739943909}
+  - {fileID: 1657618185914313153}
+  batteryLights: []
 --- !u!1 &5777433402461406354
 GameObject:
   m_ObjectHideFlags: 0
@@ -5490,7 +5509,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 237b6623c70d28443805a18e7738706f, type: 2}
+  - {fileID: 2100000, guid: 4ddc6b2ac11c7e34ba59672700e0eadd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

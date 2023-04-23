@@ -98,7 +98,7 @@ public class EnemySpawnManager : MonoBehaviour
         int randomElementNum = Random.Range(1, 4);
         Debug.Log("Random element number = " +  randomElementNum);
 
-        return Element.Type.Gravity;
+        return Element.Type.Nuclear;
     }
 
 
