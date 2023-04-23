@@ -7,7 +7,9 @@ public class EnemyIdleState : EnemyBaseState
 {
     public override void EnterState(EnemyController context)
     {
-        //Debug.Log("Entering Idle state");
+        // Stop movement, in case the enemy was previously in a movement state        
+        context.navAgent.isStopped = true;
+        context.animator.SetBool("WalkForwards", false);
     }
 
 
@@ -52,11 +54,6 @@ public class EnemyIdleState : EnemyBaseState
         context.SwitchState(context.MoveState);
     }
 
-
-    public override void CollisonEntered(EnemyController context, Collision collision)
-    {
-
-    }
 
     public override void AnimationClipFinished(EnemyController context, string animName)
     {

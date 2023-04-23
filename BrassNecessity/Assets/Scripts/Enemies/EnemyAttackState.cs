@@ -47,10 +47,4 @@ public class EnemyAttackState : EnemyBaseState
     }
 
 
-    public override void CollisonEntered(EnemyController context, Collision collision)
-    {
-
-    }
-
-
 }
