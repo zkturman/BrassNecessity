@@ -28,6 +28,10 @@ public class BatteryController : MonoBehaviour
         }
         else
         {
+            if (elementInfo == null)
+            {
+                elementInfo = GetComponent<ElementComponent>();
+            }
             findElementData();
             elementInfo.UpdateElement();
             batteryTanks = GetComponentsInChildren<BatteryPiece>();
@@ -58,8 +62,7 @@ public class BatteryController : MonoBehaviour
     {
         if (elementInfo == null)
         {
-            Debug.Log("?????");
-            Debug.Break();
+            elementInfo = GetComponent<ElementComponent>();
         }
         ElementPair element = elementInfo.ElementInfo;
         Color lightColor = data.GetLight(element);
