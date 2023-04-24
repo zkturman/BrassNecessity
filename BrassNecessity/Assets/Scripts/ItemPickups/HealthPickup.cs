@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthPickup : MonoBehaviour, IItemPickup
+public class HealthPickup : ItemPickup, IItemPickup
 {
     [SerializeField]
     protected float healthValue;
@@ -18,8 +18,8 @@ public class HealthPickup : MonoBehaviour, IItemPickup
 
     }
 
-    public virtual void PickupItem()
+    public override void PickupItem()
     {
-        throw new System.Exception("Needs to be implemented");
+        base.PickupItem();
     }
 }

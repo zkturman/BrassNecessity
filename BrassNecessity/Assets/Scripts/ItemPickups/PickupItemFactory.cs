@@ -5,7 +5,7 @@ using UnityEngine;
 public class PickupItemFactory : MonoBehaviour
 {
     [SerializeField]
-    private float defaultChanceToDropItem = 0.8f;
+    private float defaultChanceToDropItem = 0.2f;
     
     [SerializeField]
     private float defaultChanceItemIsShard = 0.6f;
@@ -23,7 +23,7 @@ public class PickupItemFactory : MonoBehaviour
     private HealthPickup smallHealthContainer;
 
     [SerializeField]
-    private HealthPickup mediumeHealthContainer;
+    private HealthPickup mediumHealthContainer;
 
     [SerializeField]
     private HealthPickup largeHealthContainer;
@@ -32,20 +32,36 @@ public class PickupItemFactory : MonoBehaviour
 
     private void Awake()
     {
-        if (factorySingleton = null)
+        if (factorySingleton == null)
         {
             factorySingleton = this;
         }
     }
 
-    public static IItemPickup TryCreateDropItem(ElementComponent sourceOfPickup)
+    public static ItemPickup TryCreateDropItem()
+    {
+        return TryCreateDropItem(factorySingleton.defaultChanceToDropItem);
+    }
+
+    public static ItemPickup TryCreateDropItem(ElementComponent sourceOfPickup)
     {
         return TryCreateDropItem(sourceOfPickup, factorySingleton.defaultChanceToDropItem, factorySingleton.defaultChanceItemIsShard);
     }
 
-    public static IItemPickup TryCreateDropItem(ElementComponent sourceOfPickup, float chanceToDropItem, float chanceItemIsShard)
+    public static ItemPickup TryCreateDropItem(float chanceToDropItem)
     {
-        IItemPickup dropItem = null;
+        ItemPickup dropItem = null;
+        float diceRoll = Random.Range(0f, 1f);
+        if (chanceToDropItem < diceRoll)
+        {
+            dropItem = factorySingleton.generateHealthContainer();
+        }
+        return dropItem;
+    }
+
+    public static ItemPickup TryCreateDropItem(ElementComponent sourceOfPickup, float chanceToDropItem, float chanceItemIsShard)
+    {
+        ItemPickup dropItem = null;
         float diceRoll = Random.Range(0f, 1f);
         if (diceRoll <= chanceToDropItem)
         {
@@ -54,10 +70,10 @@ public class PickupItemFactory : MonoBehaviour
         return dropItem;
     }
 
-    private IItemPickup generatePickupItem(ElementComponent sourceOfPickup, float chanceItemIsShard)
+    private ItemPickup generatePickupItem(ElementComponent sourceOfPickup, float chanceItemIsShard)
     {
         float diceRoll = Random.Range(0f, 1f);
-        IItemPickup droppedItem;
+        ItemPickup droppedItem;
         if (diceRoll < chanceItemIsShard)
         {
             droppedItem = generateElementShard(sourceOfPickup);
@@ -86,7 +102,7 @@ public class PickupItemFactory : MonoBehaviour
             droppedHealthContainer = smallHealthContainer;
         }
         else if (diceRoll < defaultChanceHealthIsSmall + defaultChanceHealthIsMedium){
-            droppedHealthContainer = mediumeHealthContainer;
+            droppedHealthContainer = mediumHealthContainer;
         }
         else
         {

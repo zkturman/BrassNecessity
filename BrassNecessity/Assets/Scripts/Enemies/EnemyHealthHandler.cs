@@ -26,6 +26,39 @@ public class EnemyHealthHandler : MonoBehaviour
         if (Health < 0)
         {
             IsDead = true;
+            DropItem();
         }
+    }
+
+    public virtual void DropItem()
+    {
+        ElementComponent enemyElement = findEnemyElement();
+        ItemPickup dropItem;
+        if (enemyElement != null)
+        {
+            dropItem = PickupItemFactory.TryCreateDropItem(enemyElement);
+        }
+        else
+        {
+            dropItem = PickupItemFactory.TryCreateDropItem();
+        }
+        if (dropItem != null)
+        {
+            dropItem.transform.position = new Vector3(transform.position.x, dropItem.transform.position.y, transform.position.z);
+        }
+    }
+
+    protected virtual ElementComponent findEnemyElement()
+    {
+        ElementComponent enemyElement = GetComponent<ElementComponent>();
+        if (enemyElement == null)
+        {
+            enemyElement = GetComponentInChildren<ElementComponent>();
+        }
+        if (enemyElement == null)
+        {
+            enemyElement = GetComponentInParent<ElementComponent>();
+        }
+        return enemyElement;
     }
 }

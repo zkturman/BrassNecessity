@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class HealthUIHanlder : MonoBehaviour
+public class HealthUIHandler : MonoBehaviour
 {
     [SerializeField]
     private PlayerHealthHandler playerHealth;

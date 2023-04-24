@@ -23,6 +23,6 @@ public class ElementPickup : ItemPickup
 
     public override void PickupItem()
     {
-        throw new System.Exception("Needs to be implemented");
+        base.PickupItem();
     }
 }

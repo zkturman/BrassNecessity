@@ -6,6 +6,6 @@ public class ItemPickup : MonoBehaviour, IItemPickup
 {
     public virtual void PickupItem()
     {
-        throw new System.Exception("Needs to be implemented in non-test scenarios.");
+        Destroy(gameObject);
     }
 }

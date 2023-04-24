@@ -23,6 +23,7 @@ public class BatteryController : MonoBehaviour
     {
         if (Application.IsPlaying(gameObject))
         {
+            findElementData();
             lastType = elementInfo.ElementInfo.Primary;
             updateBatteryElement();
         }
