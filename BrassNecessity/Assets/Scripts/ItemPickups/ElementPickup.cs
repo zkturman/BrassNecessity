@@ -13,11 +13,25 @@ public class ElementPickup : ItemPickup
         private set => element = value;
     }
 
+    [SerializeField]
+    private float disappearTimeoutInSeconds = 10f;
+    private FrameTimeoutHandler disappearTimeoutHandler;
+
     protected virtual void Awake()
     {
         if (element == null)
         {
             this.element = GetComponent<ElementComponent>();
+        }
+        disappearTimeoutHandler = new FrameTimeoutHandler(disappearTimeoutInSeconds);
+    }
+
+    protected virtual void Update()
+    {
+        disappearTimeoutHandler.UpdateTimePassed(Time.deltaTime);
+        if (disappearTimeoutHandler.HasTimeoutEnded())
+        {
+            Destroy(this.gameObject);
         }
     }
 

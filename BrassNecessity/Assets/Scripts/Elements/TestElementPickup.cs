@@ -18,6 +18,8 @@ public class TestElementPickup : ElementPickup
         testPickup = new TestItemPickup(this, itemsToHide);   
     }
 
+    protected override void Update() { }
+
     public override void PickupItem()
     {
         testPickup.PickupItem(respawnDelayInSeconds);

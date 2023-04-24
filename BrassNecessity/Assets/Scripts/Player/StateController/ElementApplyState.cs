@@ -74,4 +74,9 @@ public class ElementApplyState : MonoBehaviour, IControllerState
     {
         return availableElements.Count > 0;
     }
+
+    public Queue<ElementComponent> GetElementsCopy()
+    {
+        return new Queue<ElementComponent>(availableElements);
+    }
 }
