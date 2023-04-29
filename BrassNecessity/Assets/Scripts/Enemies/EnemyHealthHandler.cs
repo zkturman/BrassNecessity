@@ -44,7 +44,7 @@ public class EnemyHealthHandler : MonoBehaviour
         }
         if (dropItem != null)
         {
-            dropItem.transform.position = new Vector3(transform.position.x, dropItem.transform.position.y, transform.position.z);
+            dropItem.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         }
     }
 
