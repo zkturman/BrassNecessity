@@ -29,7 +29,6 @@ public class LaserSeekBehaviour : MonoBehaviour
     private LaserSoundBehaviour soundEffects;
 
     private EnemyHealthHandler hitEnemy;
-    private EnemyHealthHandler lastHitEnemy;
 
     private void Start()
     {
@@ -69,7 +68,6 @@ public class LaserSeekBehaviour : MonoBehaviour
         }
         else
         {
-            lastHitEnemy = null;
             soundEffects.NormaliseLaserFiringSoundPitch();
             impactEffect.ResetEffects();
         }
@@ -82,11 +80,6 @@ public class LaserSeekBehaviour : MonoBehaviour
         ElementPair laserElement = weaponElement.ElementInfo;
         float multiplier = ElementMultiplierGrid.GetAttackMultiplier(laserElement.Primary, enemyElement.Primary);
         impactEffect.SetImpactEffects(multiplier);
-        if (lastHitEnemy != hitEnemy)
-        {
-            //soundEffects.PlayLaserImpactSound(multiplier);
-            lastHitEnemy = hitEnemy;
-        }
         soundEffects.ChangeLaserFiringSoundWithMultiplier(multiplier);
         float damage = baseDamagePerSecond * multiplier * Time.deltaTime;
         hitEnemy.DamageEnemy(damage);
@@ -104,7 +97,6 @@ public class LaserSeekBehaviour : MonoBehaviour
         impactEffect.ResetEffects();
         soundEffects.StopLoopLaserFiringEffect();
         hitEnemy = null;
-        lastHitEnemy = null;
     }
 
     private void OnDrawGizmosSelected()

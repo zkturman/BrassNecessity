@@ -33,9 +33,9 @@ public class ElementApplyState : MonoBehaviour, IControllerState
     {
         timeoutHandler = new FrameTimeoutHandler(applyTimeout);
         laserElement = playerLaser.GetComponent<ElementComponent>();
-        if (weaponBehaviour == null)
+        if (soundEffects == null)
         {
-            weaponBehaviour = FindObjectOfType<WeaponBehaviour>();
+            soundEffects = FindObjectOfType<SoundEffectTrackHandler>();
         }
         availableElements = new Queue<ElementComponent>();
         input = GetComponentInParent<PlayerControllerInputs>();
