@@ -33,6 +33,7 @@ public class EnemyControllerHealthHandler : EnemyHealthHandler
         {
             Health = 0;
             IsDead = true;
+            DropItem();
             enemyController.EnemyHasDied();
         }
     }
