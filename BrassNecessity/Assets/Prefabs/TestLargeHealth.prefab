@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 1194293814415940327}
   - component: {fileID: 1194293814415940324}
   - component: {fileID: 1194293814415940325}
-  - component: {fileID: 4188932568421482455}
+  - component: {fileID: 1981041359045200779}
   m_Layer: 0
   m_Name: TestLargeHealth
   m_TagString: Untagged
@@ -118,7 +118,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 1.5, z: 2.2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &4188932568421482455
+--- !u!54 &1981041359045200779
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -132,7 +132,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 14
   m_CollisionDetection: 0
 --- !u!1 &1194293814446546723
 GameObject:

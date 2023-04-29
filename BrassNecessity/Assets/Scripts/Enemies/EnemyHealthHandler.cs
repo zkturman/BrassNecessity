@@ -44,7 +44,9 @@ public class EnemyHealthHandler : MonoBehaviour
         }
         if (dropItem != null)
         {
-            dropItem.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            Collider dropItemBounds = dropItem.GetComponent<Collider>();
+            float heightAdjustment = dropItemBounds.bounds.extents.y;
+            dropItem.transform.position = new Vector3(transform.position.x, transform.position.y + heightAdjustment, transform.position.z);
         }
     }
 
