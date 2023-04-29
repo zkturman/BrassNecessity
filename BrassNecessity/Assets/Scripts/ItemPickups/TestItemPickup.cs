@@ -7,12 +7,14 @@ public class TestItemPickup
     private MonoBehaviour testItem;
     private MeshRenderer testMesh;
     private Collider collider;
+    private Rigidbody rigidbody;
     private GameObject[] itemsToHide;
     public TestItemPickup(MonoBehaviour testItem, GameObject[] itemsToHide)
     {
         this.testItem = testItem;
         testMesh = testItem.GetComponent<MeshRenderer>();
         collider = testItem.GetComponent<Collider>();
+        rigidbody = testItem.GetComponent<Rigidbody>();
         this.itemsToHide = itemsToHide;
     }
 
@@ -37,6 +39,10 @@ public class TestItemPickup
         if (collider != null)
         {
             collider.enabled = shouldEnable;
+        }
+        if (rigidbody != null)
+        {
+            rigidbody.useGravity = shouldEnable;
         }
         if (itemsToHide != null)
         {
