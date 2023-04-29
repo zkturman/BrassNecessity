@@ -25,7 +25,11 @@ public class LaserSeekBehaviour : MonoBehaviour
     [SerializeField]
     private ImpactBehaviour impactEffect;
 
+    [SerializeField]
+    private LaserSoundBehaviour soundEffects;
+
     private EnemyHealthHandler hitEnemy;
+    private EnemyHealthHandler lastHitEnemy;
 
     private void Start()
     {
@@ -39,6 +43,7 @@ public class LaserSeekBehaviour : MonoBehaviour
     public void SeekTarget()
     {
         gameObject.SetActive(true);
+        soundEffects.StartLoopLaserFiringEffect();
         RaycastHit target;
         Vector3 raycastStart = transform.position;
         Vector3 raycastDirection = transform.TransformDirection(Vector3.up);
@@ -64,6 +69,8 @@ public class LaserSeekBehaviour : MonoBehaviour
         }
         else
         {
+            lastHitEnemy = null;
+            soundEffects.NormaliseLaserFiringSoundPitch();
             impactEffect.ResetEffects();
         }
         laserBeam.UpdateLineScale();
@@ -75,6 +82,12 @@ public class LaserSeekBehaviour : MonoBehaviour
         ElementPair laserElement = weaponElement.ElementInfo;
         float multiplier = ElementMultiplierGrid.GetAttackMultiplier(laserElement.Primary, enemyElement.Primary);
         impactEffect.SetImpactEffects(multiplier);
+        if (lastHitEnemy != hitEnemy)
+        {
+            //soundEffects.PlayLaserImpactSound(multiplier);
+            lastHitEnemy = hitEnemy;
+        }
+        soundEffects.ChangeLaserFiringSoundWithMultiplier(multiplier);
         float damage = baseDamagePerSecond * multiplier * Time.deltaTime;
         hitEnemy.DamageEnemy(damage);
     }
@@ -88,9 +101,10 @@ public class LaserSeekBehaviour : MonoBehaviour
         laserRender.enabled = false;
         gameObject.SetActive(false);
         laserBeam.StartPos = oldStart;
-        impactEffect.ResetEffects(); 
+        impactEffect.ResetEffects();
+        soundEffects.StopLoopLaserFiringEffect();
         hitEnemy = null;
-        
+        lastHitEnemy = null;
     }
 
     private void OnDrawGizmosSelected()

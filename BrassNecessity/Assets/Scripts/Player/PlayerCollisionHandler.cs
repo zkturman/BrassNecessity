@@ -7,11 +7,18 @@ public class PlayerCollisionHandler : MonoBehaviour
     private CharacterController controller;
     private ElementApplyState applyState;
     private PlayerHealthHandler healthHandler;
+
+    [SerializeField]
+    private SoundEffectTrackHandler soundEffects;
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
         applyState = GetComponentInChildren<ElementApplyState>();
         healthHandler = GetComponent<PlayerHealthHandler>();
+        if (soundEffects == null)
+        {
+            soundEffects = FindObjectOfType<SoundEffectTrackHandler>();
+        }
     }
     // Start is called before the first frame update
     void Start()
@@ -35,9 +42,13 @@ public class PlayerCollisionHandler : MonoBehaviour
             ElementPickup elementItem;
             if (collision.collider.TryGetComponent<ElementPickup>(out elementItem))
             {
-                ElementComponent element = elementItem.Element;
-                applyState.AddElement(element);
-                elementItem.PickupItem();
+                if (!applyState.AtMaximumElements())
+                {
+                    soundEffects.PlayOnce(SoundEffectKey.ElementPickup);
+                    ElementComponent element = elementItem.Element;
+                    applyState.AddElement(element);
+                    elementItem.PickupItem();
+                }
             }
             HealthPickup healthItem;
             if (collision.collider.TryGetComponent<HealthPickup>(out healthItem))

@@ -8,8 +8,13 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement style="align-items: flex-end;">
-            <ui:VisualElement style="width: 220px; height: 500px; justify-content: flex-end; margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;">
+            <ui:VisualElement style="width: 220px; height: 600px; justify-content: flex-end; margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;">
                 <ui:VisualElement name="ElementQueue" style="align-items: flex-end; flex-direction: column-reverse;">
+                    <ui:VisualElement name="QueuedElement" class="elementImage" />
+                    <ui:VisualElement name="QueuedElement" class="elementImage" />
+                    <ui:VisualElement name="QueuedElement" class="elementImage" />
+                    <ui:VisualElement name="QueuedElement" class="elementImage" />
+                    <ui:VisualElement name="QueuedElement" class="elementImage" />
                     <ui:VisualElement name="QueuedElement" class="elementImage" />
                     <ui:VisualElement name="QueuedElement" class="elementImage" />
                     <ui:VisualElement name="QueuedElement" class="elementImage" />

@@ -9,11 +9,15 @@ public class ElementApplyState : MonoBehaviour, IControllerState
     [SerializeField]
     private GameObject playerLaser;
     [SerializeField]
+    private WeaponBehaviour weaponBehaviour;
+    [SerializeField]
     private ControllerMoveData moveData;
     [SerializeField]
     private ControllerJumpFallData jumpData;
     [SerializeField]
     private ControllerAnimationManager animationManager;
+    [SerializeField]
+    private int maximumElements = 10;
 
     private ElementComponent laserElement;
     private PlayerControllerInputs input;
@@ -22,10 +26,17 @@ public class ElementApplyState : MonoBehaviour, IControllerState
     private Queue<ElementComponent> availableElements;
     private InputAgnosticMover mover;
 
+    [SerializeField]
+    private SoundEffectTrackHandler soundEffects;
+
     private void Awake()
     {
         timeoutHandler = new FrameTimeoutHandler(applyTimeout);
         laserElement = playerLaser.GetComponent<ElementComponent>();
+        if (weaponBehaviour == null)
+        {
+            weaponBehaviour = FindObjectOfType<WeaponBehaviour>();
+        }
         availableElements = new Queue<ElementComponent>();
         input = GetComponentInParent<PlayerControllerInputs>();
         mover = new InputAgnosticMover(moveData, jumpData);
@@ -42,11 +53,18 @@ public class ElementApplyState : MonoBehaviour, IControllerState
     public void StateEnter()
     {
         timeoutHandler.ResetTimeout();
-        if (availableElements.Count > 0)
+        if (HasElements())
         {
             ElementComponent newElement = availableElements.Dequeue();
             laserElement.SwitchType(newElement.ElementInfo.Primary);
+            soundEffects.PlayOnce(SoundEffectKey.ElementEquip);
         }
+        else if (shouldUpdateWhenNoElements())
+        {
+            soundEffects.PlayOnce(SoundEffectKey.ElementEquip);
+            laserElement.SwitchType(Element.Type.None);
+        }
+        weaponBehaviour.ResetElement();
         NextState = this;
     }
 
@@ -64,6 +82,11 @@ public class ElementApplyState : MonoBehaviour, IControllerState
         }
     }
 
+    public bool AtMaximumElements()
+    {
+        return maximumElements == availableElements.Count;
+    }
+
     public void AddElement(ElementComponent nextElement)
     {
         availableElements.Enqueue(nextElement);
@@ -73,6 +96,11 @@ public class ElementApplyState : MonoBehaviour, IControllerState
     public bool HasElements()
     {
         return availableElements.Count > 0;
+    }
+
+    private bool shouldUpdateWhenNoElements()
+    {
+        return laserElement.ElementInfo.Primary != Element.Type.None || weaponBehaviour.IsElementBroken;
     }
 
     public Queue<ElementComponent> GetElementsCopy()

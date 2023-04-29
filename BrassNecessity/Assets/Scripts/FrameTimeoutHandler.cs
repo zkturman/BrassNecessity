@@ -34,4 +34,9 @@ public class FrameTimeoutHandler
     {
         secondsPassed += secondsPassedSinceLastFrame;
     }
+
+    public float TimeRemaining()
+    {
+        return secondsOfTimeout - secondsPassed; 
+    }
 }

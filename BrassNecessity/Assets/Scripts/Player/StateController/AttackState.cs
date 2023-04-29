@@ -18,11 +18,13 @@ public class AttackState : MonoBehaviour, IControllerState
     private ControllerMoveData moveData;
     [SerializeField]
     private ControllerJumpFallData jumpFallData;
-
     private InputAgnosticMover mover;
     private ElementApplyState applyState;
 
     private FrameTimeoutHandler attackTimeoutHandler;
+
+    [SerializeField]
+    private SoundEffectTrackHandler soundEffects;
 
     private void Awake()
     {
@@ -32,6 +34,10 @@ public class AttackState : MonoBehaviour, IControllerState
         mover = new InputAgnosticMover(moveData, jumpFallData);
         mover.AddAnimationManager(animData);
         applyState = GetComponent<ElementApplyState>();
+        if (soundEffects == null)
+        {
+            soundEffects = FindObjectOfType<SoundEffectTrackHandler>();
+        }
     }
 
     public IControllerState GetNextState()
@@ -55,7 +61,8 @@ public class AttackState : MonoBehaviour, IControllerState
     {
         if (shouldApplyElement())
         {
-            NextState = GetComponent<ElementApplyState>();
+            NextState = applyState;
+            laserGun.ReleaseLaser();
         }
         else if (!input.shoot)
         {
@@ -66,6 +73,11 @@ public class AttackState : MonoBehaviour, IControllerState
         {
             laserGun.FireLaser();
             mover.MovePlayer(input);
+        }
+        if (laserGun.IsElementBroken)
+        {
+            NextState = GetComponent<ElementBrokenState>();
+            laserGun.ReleaseLaser();
         }
     }
 

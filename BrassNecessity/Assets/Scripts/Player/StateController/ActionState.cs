@@ -33,7 +33,7 @@ public class ActionState : MonoBehaviour, IControllerState
 
     public IControllerState GetNextState()
     {
-        return this;
+        return NextState;
     }
 
     public void StateEnter()
@@ -53,7 +53,7 @@ public class ActionState : MonoBehaviour, IControllerState
         {
             NextState = GetComponent<AttackState>(); ;
         }
-        else if (_input.applyElement)
+        else if (shouldApplyElement())
         {
             NextState = applyState;
         }
@@ -61,6 +61,11 @@ public class ActionState : MonoBehaviour, IControllerState
         {
             mover.MovePlayer(_input);
         }
+    }
+
+    private bool shouldApplyElement()
+    {
+        return _input.applyElement;
     }
 
     private void OnDrawGizmosSelected()
