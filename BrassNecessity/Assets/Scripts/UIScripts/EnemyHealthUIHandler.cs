@@ -11,7 +11,8 @@ public class EnemyHealthUIHandler : MonoBehaviour
 
     private void Awake()
     {
-        healthLabel.text = enemyHealth.GetBaseHealth().ToString("F2");
+        //healthLabel.text = enemyHealth.GetBaseHealth().ToString("F2");
+        healthLabel.text = enemyHealth.GetBaseHealth().ToString("F0");
     }
 
     private void Update()
@@ -19,7 +20,7 @@ public class EnemyHealthUIHandler : MonoBehaviour
         // Updated so that the numbers disappear when the enemy is killed
         if (enemyHealth.Health > 0)
         {
-            healthLabel.text = enemyHealth.Health.ToString("F2");
+            healthLabel.text = enemyHealth.Health.ToString("F0");
         } else
         {
             healthLabel.text = "";

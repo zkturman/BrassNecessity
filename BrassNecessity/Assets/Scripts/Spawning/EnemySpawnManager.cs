@@ -12,13 +12,14 @@ public class EnemySpawnManager : MonoBehaviour
     public int maxConcurrentEnemies = 3;    // Total number of enemies that should be present in the level at any time
     public float spawnCheckInterval = 4f;             // Gap between spawn check
     public GameObject[] spawnPoints;       // Each game object marks the location of a spawnPoint
-    public GameObject enemyPrefab;      // *** Will need updating later to enable multiple enemy prefabs ***
+    public GameObject[] enemyPrefabs;      // *** Will need updating later to enable multiple enemy prefabs ***
     public Transform spawnedEnemiesHolder;    // Each spawned enemy will be made a child of this gameobject, to keep them neatly grouped in the scene hierarchy
 
 
     int remainingEnemiesToBeSpawned;
     int currentSpawnedEnemies;
     int currentSpawnPointNum = 0;
+    int nextSpawnPrefabIndex = 0;
 
 
     private void Awake()
@@ -72,11 +73,16 @@ public class EnemySpawnManager : MonoBehaviour
         
     void SpawnEnemy(int spawnPointNum)
     {
-        // *** Code should be upgraded later to vary the attributes/colours/etc. of each enemy spawned. ***
-        
-        
+        // Choose enemy prefab to spawn
+        GameObject chosenPrefab = enemyPrefabs[nextSpawnPrefabIndex];
+        nextSpawnPrefabIndex++;
+        if (nextSpawnPrefabIndex >= enemyPrefabs.Length)
+        {
+            nextSpawnPrefabIndex = 0;
+        }
+
         // Spawn enemy
-        EnemyController newEnemy = Instantiate(enemyPrefab, spawnPoints[spawnPointNum].transform.position, spawnPoints[spawnPointNum].transform.rotation, spawnedEnemiesHolder).GetComponent<EnemyController>();
+        EnemyController newEnemy = Instantiate(chosenPrefab, spawnPoints[spawnPointNum].transform.position, spawnPoints[spawnPointNum].transform.rotation, spawnedEnemiesHolder).GetComponent<EnemyController>();
         newEnemy.spawnManager = this;
         newEnemy.SetElement(ChooseElement());
         
@@ -96,9 +102,10 @@ public class EnemySpawnManager : MonoBehaviour
     {
         // *** CODE NEEDS UPDATING TO RANDOMISE OR LOOP ***
         int randomElementNum = Random.Range(1, 4);
-        Debug.Log("Random element number = " +  randomElementNum);
+        //Debug.Log("Random element number = " +  randomElementNum);
 
-        return Element.Type.Nuclear;
+        return (Element.Type) randomElementNum;    // Casts the integer as the Element.Type enum value
+        //return Element.Type.Nuclear;
     }
 
 

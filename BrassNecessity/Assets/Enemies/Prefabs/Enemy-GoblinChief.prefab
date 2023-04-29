@@ -2752,7 +2752,7 @@ GameObject:
   - component: {fileID: 8876260216095072482}
   - component: {fileID: 566807082}
   m_Layer: 0
-  m_Name: SyntyDungeonGoblinChief
+  m_Name: Enemy-GoblinChief
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
