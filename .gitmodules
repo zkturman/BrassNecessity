@@ -1,3 +1,3 @@
-[submodule ".\\BrassNecessity\\Assets\\Asset Packs"]
-	path = .\\BrassNecessity\\Assets\\Asset Packs
+[submodule "BrassNecessity/Assets/Asset Packs/"]
+	path = "BrassNecessity/Assets/Asset Packs"
 	url = https://github.com/zkturman/BrassNecessity_Assets.git
