@@ -1,7 +1,5 @@
-[submodule "BrassNecessity/Assets/Asset Packs"]
-	path = "BrassNecessity/Assets/Asset Packs"
-	url = https://github.com/zkturman/BrassNecessity_Assets.git
-	branch = main
-	update = merge
 [submodule]
 	recurse = true
+[submodule "BrassNecessity/Assets/AssetPacks"]
+	path = BrassNecessity/Assets/AssetPacks
+	url = https://github.com/zkturman/BrassNecessity_Assets.git
