@@ -3,3 +3,5 @@
 	url = https://github.com/zkturman/BrassNecessity_Assets.git
 	branch = main
 	update = merge
+[submodule]
+	recurse = true
